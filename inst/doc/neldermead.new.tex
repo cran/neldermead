@@ -1,0 +1,249 @@
+\inputencoding{utf8}
+\HeaderA{neldermead.new}{Initialize Neldermead Object}{neldermead.new}
+\keyword{method}{neldermead.new}
+%
+\begin{Description}\relax
+Creates a new neldermead object.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+  neldermead.new()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Value}
+Return a new neldermead object, i.e. a list with a 'type' attribute set to
+'T\_NELDERMEAD' and containing the following elements:\begin{description}
+
+\item[optbase] An optimization object, created by \code{optimbase.new()},
+i.e. list of 'type' attribute set to 'T\_OPTIMIZATION' and containing
+the following elements: \begin{description}
+
+\item[verbose] The verbose option, controlling the amount of messages.
+Set to 0.
+\item[x0] The initial guess. Set to NULL.
+\item[fx0] The value of the function for the initial guess. Set to
+NULL.
+\item[xopt] The optimum parameter. Set to 0.
+\item[fopt] The optimum function value. Set to 0.
+\item[tolfunabsolute] The absolute tolerance on function value. Default
+is 0.
+\item[tolfunrelative] The relative tolerance on function value. Default   
+is .Machine\$double.eps.
+\item[tolfunmethod] Logical flag for the tolerance on function value in
+the termination criteria. This criteria is suitable for functions which
+minimum is associated with a function value equal to 0. Set to FALSE.
+\item[tolxabsolute] The absolute tolerance on x. Set to 0.
+\item[tolxrelative] The relative tolerance on x. Set to
+.Machine\$double.eps.
+\item[tolxmethod] Possible values: FALSE, TRUE. Set to TRUE.
+\item[funevals] The number of function evaluations. Set to 0.
+\item[maxfunevals] The maximum number of function evaluations. Set to
+100.
+\item[maxiter] The maximum number of iterations. Set to 100.
+\item[iterations] The number of iterations. Set to 0.
+\item[fun] The cost function. Set to ''.
+\item[status] The status of the optimization. Set to ''.
+\item[historyfopt] The vector to store the history for fopt. The values of
+the cost function will be stored at each iteration in a new element, so
+the length of \code{historyfopt} at the end of the optimization should
+be the number of iterations. Set to NULL.
+\item[historyxopt] The list to store the history for xopt. The vectors of 
+estimates will be stored on separated levels of the list, so the length
+of \code{historyfopt} at the end of the optimization should be the
+number of iterations. Set to NULL.
+\item[verbosetermination] The verbose option for termination criteria. 
+Set to 0.
+\item[outputcommand] The command called back for output. Set to ''.
+\item[outputcommandarg] The outputcommand argument is initialized as a
+string. If the user configure this element, it is expected that a matrix
+of values or a list is passed so that the argument is appended to the
+name of the function. Set to ''.
+\item[numberofvariables] The number of variables to optimize. Set to
+0.
+\item[storehistory] The flag which enables/disables the storing of the
+history. Set to FALSE.
+\item[costfargument] The costf argument is initialized as a string. If
+the user configure this element, it is expected that a matrix of values
+or a list is passed so that the argument is appended to the name of the
+function. Set to ''.
+\item[boundsmin] Minimum bounds for the parameters. Set to NULL.
+\item[boundsmax] Maximum bounds for the parameters. Set to NULL.
+\item[nbineqconst] The number of nonlinear inequality constraints. Default
+is 0.
+\item[logfile] The name of the log file. Set to ''.
+\item[logfilehandle] The handle for the log file. Set to 0.
+\item[logstartup] Set to TRUE when the logging is started up. Set to
+FALSE.
+\item[withderivatives] Set to TRUE when the method uses derivatives.
+Set to FALSE.
+
+\end{description}
+
+
+\item[method] The name of the algorithm to use. Set to 'variable'.
+\item[simplex0] A simplex object created by
+\code{optimsimplex.new()\$newobj}, i.e. list of type attribute set to
+'T\_SIMPLEX' and containing the following elements:\begin{description}
+
+\item[verbose] The verbose option, controlling the amount of messages.
+Set to 0.
+\item[x] The coordinates of the vertices, with size nbve x n. Set
+to NULL.
+\item[n] The dimension of the space. Set to 0.
+\item[fv] The function values, with size nbve x 1. Set to NULL.
+\item[nbve] The number of vertices. Set to 0.
+
+\end{description}
+
+
+\item[simplex0method] The method to use to compute the initial simplex. Set
+to 'axes'.
+\item[simplex0length] The length to use when the initial simplex is computed
+with the 'axes' or 'spendley' methods. Set to 1.
+\item[rho] The reflection coefficient. This parameter is used when the
+\code{method} element is set to 'fixed' or 'variable'. Set to 1.
+\item[chi] The expansion coefficient. This parameter is used when the
+\code{method} element is set to 'variable'. Set to 2.
+\item[gamma] The contraction coefficient. This parameter is used when the
+\code{method} element is set to 'variable'. Set to 0.5.
+\item[sigma] The shrinkage coefficient. This parameter is used when the
+\code{method} element is set to 'fixed' or 'variable'. Set to 0.5.
+\item[tolfstdeviation] The tolerance for the standard deviation. Set to 0.
+\item[tolfstdeviationmethod] Set to FALSE.
+\item[tolsimplexizeabsolute] The absolute tolerance on the simplex size. Set
+to 0.
+\item[tolsimplexizerelative] The relative tolerance on the simplex size. Set
+to .Machine\$double.eps.
+\item[tolsimplexizemethod] Logical flag to enable/disable the tolerance on
+the simplex size. When this criteria is enabled, the values of the
+\code{tolsimplexizeabsolute} and \code{tolsimplexizerelative} elements are
+used in the termination criteria. The method to compute the size is the
+'sigmaplus' method. Set to FALSE.
+\item[simplexsize0] Initial size of the simplex, for the tolerance on the
+simplex size. Set to 0.
+\item[toldeltafv] The absolute tolerance on the difference between the
+highest and the lowest function values. Set to .Machine\$double.eps.
+\item[tolssizedeltafvmethod] Logical flag to enable/disable the termination
+criteria based on the size of the simplex and the difference of function
+value in the simplex. If this criteria is triggered, the status of the
+optimization is set to 'tolsizedeltafv'. This termination criteria uses
+the values of the \code{tolsimplexizeabsolute} and \code{toldeltafv}
+elements. This criteria is identical to Scilab's \code{fminsearch}. Set to
+FALSE.
+\item[historysimplex] The list to store the history for simplex. The simplex
+will be stored on a new level of the list at each iteration, so the
+length 
+of \code{historyfopt} at the end of the optimization should be the number
+of iterations. Set to NULL.
+\item[coords0] The coordinates of the vertices of the initial simplex. If
+the \code{simplex0method} element is set to 'given', these coordinates are
+used to compute the initial simplex. This matrix is expected to have
+shape nbve x n where nbve is the number of vertices and n is the number of
+variables. Set to NULL.
+\item[simplex0deltausual] The relative delta for non-zero parameters in
+'pfeffer' method. Set to 0.05.
+\item[simplex0deltazero] The absolute delta for non-zero parameters in
+'pfeffer' method. Set to 0.0075.
+\item[simplexopt] The optimum simplex, after one optimization process. Set
+to NULL.
+\item[restartsimplexmethod] The method to compute the initial simplex after
+a restart. Set to 'oriented'.
+\item[restartmax] The maximum number of restarts, when automatic restart is
+enabled via the \code{restartflag} element. Set to 3.
+\item[restarteps] The absolute epsilon value used to check for optimality in
+the factorial O'Neill restart detection. Set to .Machine\$double.eps.
+\item[restartstep] The absolute step length used to check for optimality in
+the factorial O'Neill restart detection. Set to 1.
+\item[kelleystagnationflag] Logical flag to enable/disable the termination
+criteria using Kelley's stagnation detection, based on sufficient decrease
+condition. If this criteria is triggered, the status of the optimization
+is set to 'kelleystagnation'. Set to FALSE.,
+\item[kelleynormalizationflag] Logical flag to enable/disable the
+normalization of the alpha coefficient in Kelley's stagnation detection,
+i.e. use the value of the \code{kelleystagnationalpha0} element as is.
+Set to TRUE, i.e. the simplex gradient of the initial simplex is taken
+into account in the stagnation detection.
+\item[kelleystagnationalpha0] The parameter used in Kelley's stagnation
+detection. Set to 1.e-4.
+\item[kelleyalpha] The current value of Kelley's alpha, after normalization,
+if required. Set to 1.e-4.
+\item[restartnb] Number of restarts performed. Set to 0.
+\item[restartflag] Logical flag to enable/disable the automatic restart of
+the algorithm. Set to FALSE.
+\item[restartdetection] The method to detect if the automatic restart must
+be performed. Set to 'oneill'.
+\item[startupflag] Set to TRUE when the startup has been performed. Set to
+FALSE.
+\item[boxnbpoints] The number of points in the initial simplex, when the
+\code{simplex0method} is set to 'randbounds'. The value of this element is
+also use to update the simplex when a restart is performed and the
+\code{restartsimplexmethod} element is set to 'randbounds'. The default
+value is so that the number of points is twice the number of variables of
+the problem. Set to '2n'.
+\item[boxnbpointseff] The effective number of points required in the simplex
+for Box's algorithm. Set to 0.
+\item[boxineqscaling] The scaling coefficient used to scale the trial point
+for function improvement or into the constraints of Box's algorithm. Set
+to 0.
+\item[checkcostfunction] Logical flag to enable/disable the checking of the
+connection of the cost function. Set to TRUE.
+\item[scalingsimplex0] The algorithm used to scale the initial simplex into
+the nonlinear constraints. The following two algorithms are provided:
+\begin{description}
+
+\item['tox0'] scales the vertices toward the initial guess.
+\item['tocentroid'] scales the vertices toward the centroid, as
+recommended by Box.
+
+\end{description}
+
+If the centroid happens to be unfeasible, because the constraints are not
+convex, the scaling of the initial simplex toward the centroid may fail.
+Since the initial guess is always feasible, scaling toward the initial
+guess cannot fail. Set to 'tox0'.
+\item[guinalphamin] The minimum value of alpha when scaling the vertices of
+the simplex into nonlinear constraints in Box's algorithm. Set to 1.e-5.
+\item[boxboundsalpha] The parameter used to project the vertices into the
+bounds in Box's algorithm. Set to 1.e-6.
+\item[boxtermination] Logical flag to enable/disable Box's termination
+criteria. Set to FALSE.
+\item[boxtolf] The absolute tolerance on difference of function values in
+the simplex, suggested by Box. This tolerance is used if the
+\code{boxtermination} element is set to TRUE. Set to 1.e-5.
+\item[boxnbmatch] The number of consecutive match of Box's termination
+criteria. Set to 5.
+\item[boxkount] Current number of consecutive match. Set to 0.
+\item[boxreflect] The reflection factor in Box's algorithm. Set to 1.3.
+\item[tolvarianceflag] Logical flag to enable/disable the termination
+criteria based on the variance of the function value. If this criteria is
+triggered, the status of the optimization is set to 'tolvariance'. This
+criteria is suggested by Nelder and Mead. Set to FALSE.
+\item[tolabsolutevariance] The absolute tolerance on the variance of the
+function values of the simplex. Set to 0.
+\item[tolrelativevariance] The relative tolerance on the variance of the
+function values of the simplex. Set to .Machine\$double.eps.
+\item[variancesimplex0] Relative tolerance on variance. Set to
+.Machine\$double.eps.
+\item[mymethod] A user-derined simplex algorithm. Set to NULL.
+\item[myterminate] A user-defined terminate function. Set to NULL.
+\item[myterminateflag] Logical flag to enable/disable the user-defined
+terminate function. Set to FALSE.
+\item[greedy] Logical flag to enable/disable greedy Nelder-Mead. Set to
+FALSE.
+
+\end{description}
+
+\end{Value}
+%
+\begin{Author}\relax
+Author of Scilab neldermead module: Michael Baudin (INRIA - Digiteo)
+
+Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
+\end{Author}
+%
+\begin{SeeAlso}\relax
+\code{\LinkA{optimbase.new}{optimbase.new}},
+\code{\LinkA{optimsimplex.new}{optimsimplex.new}}
+\end{SeeAlso}

@@ -1,0 +1,58 @@
+\inputencoding{utf8}
+\HeaderA{Get functions}{Get the value for the given key}{Get functions}
+\aliasA{neldermead.cget}{Get functions}{neldermead.cget}
+\aliasA{neldermead.get}{Get functions}{neldermead.get}
+\keyword{method}{Get functions}
+%
+\begin{Description}\relax
+Get the value for the given key in a neldermead object.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+  neldermead.get(this = NULL, key = NULL)
+  neldermead.cget(this = NULL, key = NULL)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{this}] A neldermead object.
+\item[\code{key}] The name of the key to quiery. The list of available keys for
+query with \code{neldermead.get} is: '-historysimplex',
+'-simplexopt', '-simplex0', and '-restartnb'. If \code{key} is different,
+the query is delegated to \code{optimbase.get}.
+
+The list of available keys for query with \code{neldermead.cget} is:
+'-method', '-coords0', '-simplex0method', '-simplex0length',
+'-simplex0deltausual', '-simplex0deltazero', '-rho', '-chi', '-gamma',
+'-sigma', '-tolsimplexizeabsolute', '-tolsimplexizerelative',
+'-tolsimplexizemethod', '-toldeltafv', '-tolssizedeltafvmethod',
+'-restartmax', '-restarteps', '-restartstep', '-kelleystagnationflag',
+'-kelleynormalizationflag', '-kelleystagnationalpha0', '-restartflag',
+'-restartdetection', '-restartsimplexmethod', '-checkcostfunction',
+'-boxnbpoints', '-boxineqscaling', '-scalingsimplex0', '-guinalphamin',
+'-boxtermination', '-boxtolf', '-boxnbmatch', '-boxreflect', '-mymethod',
+'-myterminate', '-myterminateflag', '-tolvarianceflag',
+'-tolabsolutevariance', '-tolrelativevariance', and '-greedy'. If \code{key}
+is different, the query is delegated to \code{optimbase.cget}.
+
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Return the value of the list element \code{key}, or an error message if
+\code{key} does not exist.
+\end{Value}
+%
+\begin{Author}\relax
+Author of Scilab neldermead module: Michael Baudin (INRIA - Digiteo)
+
+Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
+\end{Author}
+%
+\begin{SeeAlso}\relax
+\code{\LinkA{neldermead.configure}{neldermead.configure}},
+\code{\LinkA{optimbase.cget}{optimbase.cget}},
+\code{\LinkA{optimbase.get}{optimbase.get}}
+\end{SeeAlso}
