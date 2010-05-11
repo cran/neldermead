@@ -1,0 +1,7 @@
+2010/05/11 Sebastien Bihorel <sb.pmlab@gmail.com>
+
+  * neldermead.Rnw: corrected \bibliography{neldermead.bib} to
+    \bibliography{neldermead} to address compilation issue in Windows.
+
+  * DESCRIPTION: corrected typos in the description of the algorithms (replaced
+    'sized' by 'shape')

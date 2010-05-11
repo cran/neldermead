@@ -76,14 +76,14 @@ associated with one point and one function value.
 
 The following algorithms are available: 
 \begin{itemize}
-  \item{The fixed size simplex method of Spendley, Hext and Himsworth: this
-    algorithm solves an unconstrained optimization problem with a fixed sized
+  \item{The fixed shape simplex method of Spendley, Hext and Himsworth: this
+    algorithm solves an unconstrained optimization problem with a fixed shape
     simplex made of \(k=n+1\) vertices.}
-  \item{The variable size simplex method of Nelder and Mead: this algorithm
-    solves an unconstrained optimization problem with a variable sized simplex
+  \item{The variable shape simplex method of Nelder and Mead: this algorithm
+    solves an unconstrained optimization problem with a variable shape simplex
     made of \(k=n+1\) vertices \cite{neldermead.1965}.}
   \item{Box's complex method: this algorithm solves an constrained optimization
-    problem with a variable sized simplex made of an arbitrary k number of
+    problem with a variable shape simplex made of an arbitrary k number of
     vertices (\(k=2n\) is recommended by Box).}
 \end{itemize}
 
@@ -509,7 +509,7 @@ of the \code{status} output argument of the user-defined termination function.
 % Bibliography
 \bibliographystyle{plain}
 \renewcommand*{\refname}{}
-\bibliography{neldermead.bib}
+\bibliography{neldermead}
 
 \section{Dependencies of fminsearch}
 We illustrate in the figures below the network of functions of the

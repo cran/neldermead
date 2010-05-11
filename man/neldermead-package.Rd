@@ -49,7 +49,7 @@
   The following is a list of features the Nelder-Mead prototype algorithm
   currently provides:\itemize{
     \item Provides 3 algorithms, including \itemize{
-      \item the fixed shaped algorithm of Spendley et al.,
+      \item the fixed shape algorithm of Spendley et al.,
       \item the variable shape algorithm of Nelder and Mead,
       \item Box's 'complex' algorithm managing bounds and nonlinear inequality
         constraints based on arbitrary number of vertices in the simplex.
@@ -94,8 +94,8 @@
   \tabular{ll}{
   Package: \tab neldermead\cr
   Type: \tab Package\cr
-  Version: \tab 1.0\cr
-  Date: \tab 2010-05-01\cr
+  Version: \tab 1.0-2\cr
+  Date: \tab 2010-05-11\cr
   License: \tab CeCILL-2\cr
   LazyLoad: \tab yes
   }
