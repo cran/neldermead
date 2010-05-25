@@ -89,7 +89,7 @@ neldermead.startup <- function(this=NULL){
   if (hasbounds | hasnlcons){
     # Check that initial guess is feasible
     tmp <- optimbase.isfeasible(this=this$optbase,x=x0)
-      this <- tmp$this
+      this$optbase <- tmp$this
       isfeasible <- tmp$isfeasible
     rm(tmp)
     if (isfeasible!=1)

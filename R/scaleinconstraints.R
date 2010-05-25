@@ -32,8 +32,8 @@ scaleinconstraints <- function(this=NULL,x=NULL,xref=NULL){
   #
   if (hasbounds){
     tmp <- optimbase.proj2bnds(this=this$optbase,x=p)
-      varargout$this$optbase <- tmp$this
-      varargout$p <- tmp$p
+      this$optbase <- tmp$this
+      p <- tmp$p
     rm(tmp)
     this <- neldermead.log(this=this,
                            msg=sprintf(' > After projection into bounds p = [%s]',strvec(p)))
@@ -50,30 +50,30 @@ scaleinconstraints <- function(this=NULL,x=NULL,xref=NULL){
   #
   isscaled <- FALSE
   alpha <- 1.0
-  p0 <- varargout$p
+  p0 <- p
   while (alpha > this$guinalphamin){
     tmp <- optimbase.isinnonlincons(this=this$optbase,x=p)
-      this <- tmp$this
+      this$optbase <- tmp$this
       feasible <- tmp$isfeasible
     rm(tmp)
     if (feasible){
-      varargout$isscaled = TRUE
+      isscaled = TRUE
       break
     }
     alpha <- alpha * this$boxineqscaling
     this <- neldermead.log(this=this,
                            msg=sprintf('Scaling inequality constraint with alpha = %e',alpha))
-    varargout$p <-(1.0 - alpha ) * xref + alpha * p0
+   p <-(1.0 - alpha ) * xref + alpha * p0
   }
   this <- neldermead.log(this=this,
                          msg=sprintf(' > After scaling into inequality constraints p = [%s]',strvec(p)))
-  if (!varargout$isscaled){
+  if (!isscaled){
     this <- neldermead.log(this=this,
                            msg=sprintf(' > Impossible to scale into constraints after %d loops',
                                        this$optbase.nbineqconst))
   }
 
-  varargout$this <- this
+  varargout <- list(this=this, isscaled=isscaled, p=p)
 
   return(varargout)
   

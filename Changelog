@@ -1,3 +1,18 @@
+2010/05/25 Sebastien Bihorel <sb.pmlab@gmail.com>
+
+  * neldermead.startup: at line 92, substituted "this <- tmp$this" by 
+    "this$optbase <- tmp$this"
+
+  * neldermead.storehistory: corrected keys in the calls to optimbase.histset
+
+  * scaleinconstraints: modified syntax and corrected multiple bugs which 
+    broke the Box's method.
+
+  * neldermead.function: function added.
+
+  * neldermead.Rnw: modified Description and Cost function sections. Added a 
+    section of examples.
+
 2010/05/11 Sebastien Bihorel <sb.pmlab@gmail.com>
 
   * neldermead.Rnw: corrected \bibliography{neldermead.bib} to

@@ -123,7 +123,7 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
     xr0 <- xr
     while (alpha>alphamin){
       tmp <- optimbase.isinnonlincons(this=this$optbase,x=xr)
-        this <- tmp$this
+        this$optbase <- tmp$this
         feasible <- tmp$isfeasible
       rm(tmp)
       if (feasible){

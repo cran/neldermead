@@ -31,7 +31,6 @@
 \begin{document}
 \maketitle
 
-
 \neldermead{} is a R port of a module originally developped for Scilab version
 5.2.1 by Michael Baudin (INRIA - DIGITEO). Information about this software can
 be found at \url{www.scilab.org}. The following documentation as well as the
@@ -47,7 +46,8 @@ with the original Scilab neldermead module.
 
 % Some Sweave preamble
 <<echo=false>>=
-options(width=70)
+options(width=75)
+require(neldermead)
 @
 
 %\cleardoublepage
@@ -62,12 +62,14 @@ minimization of a cost function, with bounds and nonlinear constraints.\\
   \begin{array}{l l}
     min f(x)\\
     l_i \le{} x_i \le{} h_i, & i = 1,n \\
-    g_i(x) \le{} 0, & i = 1,nbineq \\\\
+    g_j(x) \ge{} 0, & j = 0,nbineq \\\\
   \end{array}
 \end{math}
  
-where \(n\) is the number of variables and \(nbineq\) the number of inequality
-constraints.
+where \(f\) is the cost function, \(x\) is the vector of parameter estimates,
+\(l\) and \(h\) are vectors of lower and upper bounds for the parameter
+estimates, \(n\) is the number of parameters and \(nbineq\) the number of
+inequality constraints \(g(x)\).
 
 The provided algorithms are direct search algorithms, i.e. algorithms which do
 not use the derivative of the cost function. They are based on the update of a
@@ -100,7 +102,8 @@ value \code{f}. If the \code{nbineqconst} element of the neldermead object is
 configured to a non-zero value, the cost function must also compute the value
 of the nonlinear, positive, inequality constraints \code{c}. The cost function
 can also take as input/output an additional argument, if the
-\code{costfargument} element is configured. It should be defined as follows:\\
+\code{costfargument} element is configured. The function should be defined as
+described in \code{vignette('optimbase',package='optimbase'}):\\
 
   \code{costf <- function(x, index, fmsfundata)}\\
 
@@ -121,7 +124,6 @@ has the following meaning:
     inequality constraints}
   \item{index = 6:}{ compute \code{f} and \code{c}}
 \end{description}
-
   
 The \code{fmsdata} argument is both input and output. This feature may be used
 in the situation where the cost function has to update its environment from call
@@ -423,8 +425,7 @@ satisfy the non linear constraints, then it should be 'moved halfway toward the
 centroid of those points already selected'. This behaviour is available when the
 \code{scalingsimplex0} element of the neldermead object is set to 'tocenter'. It
 may happen, as suggested by Guin \cite{guin.1968}, that the centroid is not
-feasible. This may
-happen if the constraints are not convex. In this case, the initial simplex
+feasible if the constraints are not convex. In this case, the initial simplex
 cannot be computed. This is why we provide the 'tox0' option, which allows to
 compute the initial simplex by scaling toward the initial guess, which is always
 feasible.
@@ -505,6 +506,246 @@ is TRUE, then the algorithm is stopped. In that case, the value of the
 \code{status} element of the \code{neldermead.get} function output is the value
 of the \code{status} output argument of the user-defined termination function.
 
+\section{Examples}
+We present in this section basic examples illustrating the use of \neldermead{}
+functions to optimize unconstrained or constrained systems. More complex
+examples are described in a Scilab-based document written by Michael Baudin and
+available at \url{http://forge.scilab.org/index.php/p/docneldermead/}. Because
+the R port of the Scilab \pkg{neldermead} module is almost literal, the user
+should be able to reproduce the described examples in R with minimal
+adaptations.
+
+\subsection{Example 1: basic use}
+In the following example, we solve a simple quadratic test case. We begin by
+defining the cost function, which takes 3 input arguments and returns the value
+of the objective function as the \code{f} element of a list. The standard 
+starting point [-1.2 1.0] is used. \code{neldermead.new} creates a new
+neldermead object. Then we use \code{neldermead.configure} to configure the 
+parameters of the problem. We use all default settings and perform the search
+for the optimum. \code{neldermead.get} is finally used to retrieve the optimum 
+parameters.
+<<include=FALSE>>=
+  quadratic <- function(x=NULL,index=NULL,fmsfundata=NULL){
+    return(list(f=x[1]^2 + x[2]^2,
+                g=c(),
+                c=c(), 
+                gc=c(),
+                index=index,
+                this=list(costfargument=fmsfundata)))
+  }
+
+  x0 <- transpose( c(1.0,1.0) )
+  nm <- neldermead.new()
+  nm <- neldermead.configure(nm,'-numberofvariables',2)
+  nm <- neldermead.configure(nm,'-function',quadratic)
+  nm <- neldermead.configure(nm,'-x0',x0)
+  nm <- neldermead.search(nm)
+  transpose(neldermead.get(nm,'-xopt'))
+@
+
+\subsection{Example 2: customized use}
+In the following example, we solve the Rosenbrock test case. We begin by
+defining the Rosenbrock function, which takes 3 input arguments and returns the
+value of the objective function. The standard starting point [-1.2 1.0] is
+used. \code{neldermead.new} creates a new neldermead object. Then we use
+\code{neldermead.configure} to configure the parameters of the problem.
+The initial simplex is computed from the axes and the single length 1.0 (this is
+the default, but is explicitely written here as an example). The variable
+simplex algorithm by Nelder and Mead is used, which corresponds to the -method
+'variable' option. \code{neldermead.search} performs the search for
+the minimum. Once the minimum is found, we represent part of the search space
+using the \code{contour} function (this is possible since our problem involves
+only 2 parameters) and we superimpose the starting point (in red), the
+optimisation path (in bleu), and the optimum (in green) to the plot. The history
+of the optimisation can be retrieved (using \code{neldermead.get}) because the
+'-storehistory' option was set to TRUE.
+<<fig=TRUE>>=
+  rosenbrock <- function(x=NULL,index=NULL,fmsfundata=NULL){
+    return(list(f=100*(x[2]-x[1]^2)^2+(1-x[1])^2,
+                g=c(),
+                c=c(),
+                gc=c(),
+                index=index,
+                this=list(costfargument=fmsfundata)))
+  }
+  x0 <- transpose(c(-1.2,1.0))
+  nm <- neldermead.new()
+  nm <- neldermead.configure(nm,'-numberofvariables',2)
+  nm <- neldermead.configure(nm,'-function',rosenbrock)
+  nm <- neldermead.configure(nm,'-x0',x0)
+  nm <- neldermead.configure(nm,'-maxiter',200)
+  nm <- neldermead.configure(nm,'-maxfunevals',300)
+  nm <- neldermead.configure(nm,'-tolfunrelative',10*.Machine$double.eps)
+  nm <- neldermead.configure(nm,'-tolxrelative',10*.Machine$double.eps)
+  nm <- neldermead.configure(nm,'-simplex0method','axes')
+  nm <- neldermead.configure(nm,'-simplex0length',1.0)
+  nm <- neldermead.configure(nm,'-method','variable')
+  nm <- neldermead.configure(nm,'-verbose',0)
+  nm <- neldermead.configure(nm,'-storehistory',TRUE)
+  nm <- neldermead.configure(nm,'-verbosetermination',0)
+  nm <- neldermead.search(nm)
+  
+  xmin <- ymin <- -2.0 
+  xmax <- ymax <- 2.0 
+  nx <- ny <- 100
+  stepy <- stepx <- (xmax - xmin)/nx
+  ydata <- xdata <- seq(xmin,xmax,stepx)
+  zdata <- apply(expand.grid(xdata,ydata),1,
+                 function(x) neldermead.function(nm,transpose(x)))
+  zdata <- matrix(zdata,ncol=length(ydata))
+  optimpath <- matrix(unlist((neldermead.get(nm,'-historyxopt'))),
+                      nrow=2)
+  optimpath <- data.frame(x=optimpath[1,],y=optimpath[2,])
+
+  contour(xdata,ydata,zdata,levels=c(1,10,100,500,1000,2000))
+  par(new=TRUE,ann=TRUE)
+  plot(c(x0[1],optimpath$x[158]), c(x0[2],optimpath$y[158]),
+       col=c('red','green'),pch=16,xlab='x[1]',ylab='x[2]',
+       xlim=c(xmin,xmax),ylim=c(ymin,ymax))
+  par(new=TRUE,ann=FALSE)  
+  plot(optimpath$x,optimpath$y,col='blue',type='l',
+       xlim=c(xmin,xmax),ylim=c(ymin,ymax))
+@
+
+Setting the '-verbose' element of the neldermead object to 1 allows to get
+detailed information about the current optimization process. The following is a
+sample output for an optimization based on the Nelder and Mead variable-shape
+simplex algorithm. Only the output corresponding to the iteration \#156 is
+displayed. In order to display specific outputs (or to create specific output
+files and graphics), the '-outputcommand' option should be used.
+
+\begin{verbatim}
+=================================================================
+Iteration \#156 (total = 156)
+Function Eval \#298                                                             
+Xopt: 0.99999999999991 0.999999999999816                                        
+Fopt: 8.997809e-27                                                              
+DeltaFv: 4.492261e-26                                                           
+Center: 1.00000000000003 1.00000000000007                                       
+Size: 4.814034e-13                                                              
+Vertex \#2/3 : fv=2.649074e-26, x=1.000000e+00 1.000000e+00               
+Vertex \#3/3 : fv=5.392042e-26, x=1.000000e+00 1.000000e+00
+Reflect                     
+xbar=1.00000000000001 1.00000000000003                                          
+Function Evaluation \#299 at [0.99999999999996  ]
+Function Evaluation \#299 at [0.999999999999907  ]    
+xr=[0.99999999999996 0.999999999999907], f(xr)=0.000000                         
+  > Perform reflection                                                          
+Sort 
+\end{verbatim}
+
+\subsection{Example 3: optimization with bound constraints}
+In the following example, we solve a simple quadratic test case used in Example
+1 but in the case where bounds are set for parameter estimates. We begin by
+defining the cost function, which takes 3 input arguments and returns the value
+of the objective function as the \code{f} element of a list. The 
+starting point [1.2 1.9] is used. \code{neldermead.new} creates a new
+neldermead object. Then we use \code{neldermead.configure} to configure the 
+parameters of the problem including the lower ('-boundsmin') and upper 
+('-boundsmax') bounds. The initial simplex is computed from \code{boxnbpoints} 
+random points within the bounds. The variable simplex algorithm by Box is used, 
+which corresponds to the -method 'box' option. \code{neldermead.search} finally 
+performs the search for the minimum.
+<<include=FALSE>>=
+  quadratic <- function(x=NULL,index=NULL,fmsfundata=NULL){
+    return(list(f=x[1]^2 + x[2]^2,
+                g=c(),
+                c=c(), 
+                gc=c(),
+                index=index,
+                this=list(costfargument=fmsfundata)))
+  }
+  set.seed(0)
+  x0 <- transpose(c(1.2,1.9))
+  nm <- neldermead.new()
+  nm <- neldermead.configure(nm,'-numberofvariables',2)
+  nm <- neldermead.configure(nm,'-function',quadratic)
+  nm <- neldermead.configure(nm,'-x0',x0)
+  nm <- neldermead.configure(nm,'-verbose',0)
+  nm <- neldermead.configure(nm,'-storehistory',TRUE)
+  nm <- neldermead.configure(nm,'-verbosetermination',0)
+  nm <- neldermead.configure(nm,'-method','box')
+  nm <- neldermead.configure(nm,'-boundsmin',c(1,1))
+  nm <- neldermead.configure(nm,'-boundsmax',c(2,2))
+  nm <- neldermead.search(nm)
+  transpose(neldermead.get(nm,'-xopt'))
+@
+
+\subsection{Example 4: optimization with nonlinear inequality constraints}
+In the following example, we solve Michalewicz's \(G_6\) test problem using
+Box's methods \cite{Michalewicz.2004}. This problem consists in minimizing: 
+\(G_{6}(x)=(x_{1}-10)^3+(x_{2}-20)^3\), given the nonlinear constraints:
+
+\begin{math}
+  \begin{array}{l l}
+    c1: & (x_{1}-5)^2+(x_{2}-5)^2-100 \ge{} 0 \\
+    c2: & -(x_{1}-6)^2-(x_{2}-5)^2+82.81 \ge{} 0 \\
+  \end{array}
+\end{math}
+
+and bounds: \(13 \le{} x_{1} \le{} 100,\: 0 \le{} x_{2} \le{} 100\).
+
+We begin by defining the \code{michalewicz} function, which takes 3 input
+arguments and return the value of the objective function and the constraint 
+evaluations as the \code{f} and \code{c} elements of a list.
+\code{neldermead.new} creates a new neldermead object. Then we use 
+\code{neldermead.configure} to configure the parameters of the problem, 
+including the lower ('-boundsmin') and upper ('-boundsmax') bounds. The initial 
+simplex is computed from \code{boxnbpoints} random points within the bounds. The
+variable simplex algorithm by Box is used, which corresponds to the -method 
+'box' option. \code{neldermead.search} finally performs the search for the 
+minimum. The starting point ([15 4.99]) like all the vertices of the 
+optimization simplex must be feasible, i.e. they must satisfy all constraints 
+and bounds. Constraints are enforced by ensuring that all arguments of \code{c}
+in the cost function output are positive or null. Note that the boundaries were
+set to stricter ranges to limit the sensitivity of the solution to the initial
+guesses. 
+
+<<>>=
+  michalewicz <- function(x=NULL,index=NULL,fmsfundata=NULL){
+	f <- c()
+	c <- c()
+	if (index == 2 | index ==6) 
+		f <- (x[1]-10)^3+(x[2]-20)^3
+	
+	if (index == 5 | index ==6)
+		c <- c((x[1]-5)^2+(x[2]-5)^2 -100, 
+				82.81-((x[1]-6)^2+(x[2]-5)^2))
+	varargout <- list(f=f,
+			g=c(),
+			c=c, 
+			gc=c(),
+			index=index,
+			this=list(costfargument=fmsfundata))
+	return(varargout)
+  }
+  set.seed(0)
+  x0 <- transpose(c(15,4.99))
+  nm <- neldermead.new()
+  nm <- neldermead.configure(nm,'-numberofvariables',2)
+  nm <- neldermead.configure(nm,'-nbineqconst',2)
+  nm <- neldermead.configure(nm,'-function',michalewicz)
+  nm <- neldermead.configure(nm,'-x0',x0)
+  nm <- neldermead.configure(nm,'-maxiter',300)
+  nm <- neldermead.configure(nm,'-maxfunevals',1000)
+  nm <- neldermead.configure(nm,'-simplex0method','randbounds')
+  nm <- neldermead.configure(nm,'-boxnbpoints',3)
+  nm <- neldermead.configure(nm,'-storehistory',TRUE)
+  nm <- neldermead.configure(nm,'-method','box')
+  nm <- neldermead.configure(nm,'-boundsmin',c(13,0))
+  nm <- neldermead.configure(nm,'-boundsmax',c(20,10))
+  nm <- neldermead.search(nm)
+  transpose(neldermead.get(nm,'-xopt'))
+  neldermead.get(nm,'-fopt')
+@
+ 
+\section{fminsearch}
+\code{fminsearch} function is based on a specialized use of the more general
+\code{neldermead} function bundle and searches for the unconstrained minimum of 
+a given cost function. This function corresponds to the Matlab (or Scilab) 
+fminsearch function. Additional information and examples are available in 
+\code{?fminsearch} from a R environment.
+
 \section{References}
 % Bibliography
 \bibliographystyle{plain}
@@ -514,10 +755,9 @@ of the \code{status} output argument of the user-defined termination function.
 \section{Dependencies of fminsearch}
 We illustrate in the figures below the network of functions of the
 \neldermead{}, \pkg{optimbase}, and \pkg{optimsimplex} packages that are called
-from the \code{fminsearch} functions. This large network is broken down in
-6 plots, which are shown in the order functions are called. Green
-boxes represent functions that are not expanded on a given plot but on a
-previous or later one.
+from the \code{fminsearch} functions. This large network is broken down in 6 
+plots, which are shown in the order functions are called. Green boxes represent
+functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  

@@ -19,8 +19,14 @@ neldermead.storehistory <- function(this=NULL,n=NULL,fopt=NULL,xopt=NULL,
   storehistory <- optimbase.cget(this=this$optbase,key='-storehistory')
   iterations <- optimbase.get(this=this$optbase,key='-iterations')
   if (storehistory){
-    this$optbase <- optimbase.histset(this=this$optbase,iter=iterations,key='-fopt',value=fopt)
-    this$optbase <- optimbase.histset(this=this$optbase,iter=iterations,key='-xopt',value=xopt[1:n])
+    this$optbase <- optimbase.histset(this=this$optbase,
+                                      iter=iterations,
+                                      key='-historyfopt',
+                                      value=fopt)
+    this$optbase <- optimbase.histset(this=this$optbase,
+                                      iter=iterations,
+                                      key='-historyxopt',
+                                      value=xopt[1:n])
     this$historysimplex[[iterations]] <- xcoords[1:n+1,1:n]
   }
   return(this)

@@ -13,12 +13,12 @@
 # "Nelder-Mead User's Manual", 2010, Consortium Scilab - Digiteo,
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
-neldermead.restart <- function(this=NULL){
+neldermead.function <- function(this=NULL,x=NULL){
 
-  this <- neldermead.updatesimp(this=this)
-  this <- neldermead.search(this=this)
+  index <-2
 
-  return(this)
+  f <- optimbase.function(this=this$optbase, x=x, index=index)$f
 
-}
-
+  return(f)
+  
+} 
