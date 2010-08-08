@@ -25,7 +25,7 @@
       \item{step}{The type of step in the previous iteration.}
     }
   }
-  \item{fmsdata}{This is a list with a 'type' attribute set to 'T_FMINSEARCH'
+  \item{fmsdata}{This is a list with a 'type' attribute set to 'T_FARGS'
     which contains specific data of the \code{fminsearch} algorithm: \describe{
       \item{Display}{what to display}
       \item{OutputFcn}{the array of output functions}

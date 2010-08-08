@@ -4,7 +4,7 @@
   fminsearch Cost Function Call
 }
 \description{
-  This function calls the cost function and make it match neldermead
+  This function calls the cost function and makes it match neldermead
   requirements. It is used in the \code{fminsearch} function as the
   \code{function} element of the neldermead object (see \code{?neldermead.new}
   and \code{?neldermead.configure}). 
@@ -16,7 +16,7 @@
   \item{x}{A single column vector of parameter estimates.}
   \item{index}{An integer variable set to 2, indicating that only the cost
     function is to be computed by the algorithm.}
-  \item{fmsfundata}{A list with a type attribute set to 'T_FMINSEARCH' and
+  \item{fmsfundata}{A list with a type attribute set to 'T_FARGS' and
     with (at least) a \code{fun} element, which contain the user-defined cost
     function.}
 }

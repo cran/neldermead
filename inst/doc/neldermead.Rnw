@@ -641,8 +641,8 @@ defining the cost function, which takes 3 input arguments and returns the value
 of the objective function as the \code{f} element of a list. The 
 starting point [1.2 1.9] is used. \code{neldermead.new} creates a new
 neldermead object. Then we use \code{neldermead.configure} to configure the 
-parameters of the problem including the lower ('-boundsmin') and upper 
-('-boundsmax') bounds. The initial simplex is computed from \code{boxnbpoints} 
+parameters of the problem including the lower \code{-boundsmin} and upper 
+\code{-boundsmax} bounds. The initial simplex is computed from \code{boxnbpoints} 
 random points within the bounds. The variable simplex algorithm by Box is used, 
 which corresponds to the -method 'box' option. \code{neldermead.search} finally 
 performs the search for the minimum.
@@ -673,7 +673,8 @@ performs the search for the minimum.
 
 \subsection{Example 4: optimization with nonlinear inequality constraints}
 In the following example, we solve Michalewicz's \(G_6\) test problem using
-Box's methods \cite{Michalewicz.2004}. This problem consists in minimizing: 
+Box's methods \cite{Michalewicz.2004} \footnote{Example suggested by Pascal 
+Grandeau}. This problem consists in minimizing: 
 \(G_{6}(x)=(x_{1}-10)^3+(x_{2}-20)^3\), given the nonlinear constraints:
 
 \begin{math}
@@ -690,7 +691,7 @@ arguments and return the value of the objective function and the constraint
 evaluations as the \code{f} and \code{c} elements of a list.
 \code{neldermead.new} creates a new neldermead object. Then we use 
 \code{neldermead.configure} to configure the parameters of the problem, 
-including the lower ('-boundsmin') and upper ('-boundsmax') bounds. The initial 
+including the lower \code{-boundsmin} and upper \code{-boundsmax} bounds. The initial 
 simplex is computed from \code{boxnbpoints} random points within the bounds. The
 variable simplex algorithm by Box is used, which corresponds to the -method 
 'box' option. \code{neldermead.search} finally performs the search for the 
@@ -738,7 +739,56 @@ guesses.
   transpose(neldermead.get(nm,'-xopt'))
   neldermead.get(nm,'-fopt')
 @
- 
+
+\subsection{Example 5: Passing data to the cost function}
+In the following example, we use a simple example to illustrate how to pass 
+user-defined arguments to a user-defined cost function. We try to find the mean 
+and standard deviation of some normally distributed data using maximum 
+likelihood (actually a modifed negative log-likelihood approach) 
+\footnote{Example suggested by Mark Taper}.
+
+We begin by defining the \code{negLL} function, which takes 3 input
+arguments and return the value of the objective function. The random dataset is 
+then generated and stored in the list \code{fmsdundata}. \code{neldermead.new} 
+creates a new neldermead object. Then we use \code{neldermead.configure} to 
+configure the parameters of the problem, including \code{costfargument}, set to
+\code{fmsdundata}, and the lower \code{-boundsmin} and upper \code{-boundsmax} 
+bounds (the standard deviations has to be positive). The variable simplex
+algorithm by Box is used. \code{neldermead.search} finally performs the search 
+for the minimum.
+
+<<>>=
+  negLL <- function(x=NULL, index=NULL, fmsfundata=NULL){
+    mn <- x[1]
+    sdv <- x[2]
+    out <- -sum(dnorm(fmsfundata$data, mean=mn, sd=sdv, log=TRUE))
+  
+    return(list(f = out, 
+           index = index,
+           this=list(costfargument=fmsfundata)))
+  }
+
+  set.seed(12345)
+  fmsfundata <- list(data=rnorm(500,mean=50,sd=2))
+  attr(fmsfundata, 'type') <- 'T_FARGS'
+
+  x0 <- transpose(c(45,3))
+  nm <- neldermead.new()
+  nm <- neldermead.configure(nm,"-numberofvariables",2)
+  nm <- neldermead.configure(nm,"-function",negLL)
+  nm <- neldermead.configure(nm,"-x0",x0)
+  nm <- neldermead.configure(nm,"-costfargument",fmsfundata)
+  nm <- neldermead.configure(nm,"-maxiter",500)
+  nm <- neldermead.configure(nm,"-maxfunevals",1500)
+  nm <- neldermead.configure(nm,"-method","box")
+  nm <- neldermead.configure(nm,"-storehistory",TRUE)
+  nm <- neldermead.configure(nm,"-boundsmin",c(-100, 0))
+  nm <- neldermead.configure(nm,"-boundsmax",c(100, 100))
+  nm <- neldermead.search(this=nm)
+  transpose(neldermead.get(nm,'-xopt'))
+  neldermead.get(nm,'-fopt')
+@
+
 \section{fminsearch}
 \code{fminsearch} function is based on a specialized use of the more general
 \code{neldermead} function bundle and searches for the unconstrained minimum of 
@@ -811,6 +861,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 \section{Help on \neldermead{} functions}
 \input{neldermead-package}
 \input{costf.transposex}
+\input{fmin.gridsearch}
 \input{fminsearch.function}
 \input{fminsearch.outputfun}
 \input{fminsearch}

@@ -81,12 +81,12 @@ fminsearch <- function(fun=NULL,x0=NULL,options=NULL) {
                   OutputFcn=OutputFcn,
                   PlotFcns=PlotFcns)
 
-  attr(fmsdata,'type') <- 'T_FMINSEARCH'                  
+  attr(fmsdata,'type') <- 'T_FARGS'                  
 
   # Prepare the data structure to pass to the cost function
   fmsfundata <- list(Fun=fun)
-
-  attr(fmsfundata,'type') <- 'T_FMINSEARCH'
+  
+  attr(fmsfundata,'type') <- 'T_FARGS'
 
   # Perform Optimization
   nm <- neldermead.new()

@@ -42,7 +42,7 @@ neldermead.configure <- function(this=NULL,
     }
   }
   if (key=='-coords0'){
-    assert.typestring(var=value,varname='value',ivar=3)
+    assert.typereal(var=value,varname='value',ivar=3)
     this$coords0 <- value
   }
   if (key=='-simplex0method'){
