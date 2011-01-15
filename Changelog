@@ -1,8 +1,15 @@
+2011/01/08 Sebastien Bihorel <sb.pmlab@gmail.com>
+  
+  * fmin.gridsearch: corrected documentation about alpha. Must contain values 
+  greater than 1.
+
 2010/09/10 Sebastien Bihorel <sb.pmlab@gmail.com>
   
   * neldermead.configure: fix the check of -coords0 key to real type instead of
     of string type
+    
   * fminsearch: modified type argument of fmsdata and fmsfundata to T_FARGS
+  
   * added fmin.gridsearch function 
   
 2010/05/25 Sebastien Bihorel <sb.pmlab@gmail.com>

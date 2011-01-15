@@ -19,7 +19,7 @@
   fminsearch(fun = NULL, x0 = NULL, options = NULL)
 }
 \arguments{
-  \item{fun}{A cost function.}
+  \item{fun}{A cost function return a numeric scalar.}
   \item{x0}{A numerical vector of initial guesses (length n).}
   \item{options}{A list of optimization options, which drives the behaviour of
     \code{fminsearch}. These options must be set with the \code{optimset}

@@ -17,7 +17,6 @@
 \usepackage{color}      % use if color is used in text
 \usepackage[pdfborder={0 0 0}]{hyperref}   % use for hypertext links, including
                                            % those to external  documents and
-                                           % URLs
 
 % Page layout
 \oddsidemargin 0.5in \evensidemargin 0.5in \textwidth 6in
@@ -25,8 +24,8 @@
 % Defines some custom commands
 \newcommand{\neldermead}{\pkg{neldermead}}
 
-\title{The neldermead Package}
-\author{SÃ©bastien Bihorel}
+\title{The neldermead Package - version 1.0-5}
+\author{Sébastien Bihorel}
 
 \begin{document}
 \maketitle
@@ -103,25 +102,39 @@ configured to a non-zero value, the cost function must also compute the value
 of the nonlinear, positive, inequality constraints \code{c}. The cost function
 can also take as input/output an additional argument, if the
 \code{costfargument} element is configured. The function should be defined as
-described in \code{vignette('optimbase',package='optimbase'}):\\
+described in \code{vignette('optimbase',package='optimbase')}:\\
 
-  \code{costf <- function(x, index, fmsfundata)}\\
-
+\begin{verbatim}
+  costf <- function(x, index, fmsfundata){
+    # Define f and c here #
+    return(list(f, g=NULL, c, gc=NULL, index=index,
+                this=list(costfargument = fmsfundata)))
+  }
+\end{verbatim}
 where
 \begin{description}
   \item{\code{x}:}{ is the current point, as a column vector,}
   \item{\code{index}:}{ (optional), an integer representing the value to
     compute, and}
   \item{\code{fmsfundata}:}{ an user-provided input/output argument.}
+  \item{\code{f}:}{ the value of the objective function (a scalar),}
+  \item{\code{g}:}{ typically the gradient of the objective function in the 
+    context of the \code{optimbase} functions; must be set to NULL as the
+    Nelder-Mead is not gradient-based,}
+  \item{\code{c}:}{ the vector of values of non-linear, positive, inequality 
+    constraints,}
+  \item{\code{gc}:}{ typically the gradient of the constraints in the 
+    context of the \code{optimbase} functions; must be set to NULL as the
+    Nelder-Mead is not gradient-based,}
+  \item{\code{this}:}{ must be set to \code{list(costfargument = fmsfundata)}.}
 \end{description}
 
 The index input parameter tells the cost function what to return as output
 arguments (as described in \code{vignette('optimbase',package='optimbase'}). It
 has the following meaning:
 \begin{description}
-  \item{index = 2:}{ compute \code{f}, the value of the cost function}
-  \item{index = 5:}{ compute \code{c}, the value of the non-linear, positive,
-    inequality constraints}
+  \item{index = 2:}{ compute \code{f},}
+  \item{index = 5:}{ compute \code{c},}
   \item{index = 6:}{ compute \code{f} and \code{c}}
 \end{description}
   
@@ -131,7 +144,7 @@ to call. Its simplest use is to count the number of calls to the cost function,
 but this feature is already available directly. Consider the more practical
 situation where the optimization requires the execution of an underlying Newton
 method (a chemical solver for example). This Newton method requires an initial
-guess x0. If the initial guess for this underlying Newton method is kept
+guess \(x_0\). If the initial guess for this underlying Newton method is kept
 constant, the Newton method may have problems to converge when the current
 optimization point get far away from the its initial point. If a
 \code{costfargument} element is defined in the neldermead object, it can be
@@ -506,6 +519,38 @@ is TRUE, then the algorithm is stopped. In that case, the value of the
 \code{status} element of the \code{neldermead.get} function output is the value
 of the \code{status} output argument of the user-defined termination function.
 
+\section{Specialized functions}
+\subsection{fminsearch}
+The \code{fminsearch} function is based on a specialized use of the more general
+\code{neldermead} function bundle and searches for the unconstrained minimum of 
+a given cost function. This function corresponds to the Matlab (or Scilab) 
+fminsearch function. In the context of \code{fminsearch}, the function to be 
+minimized is not a cost function as described in Section 1.3 but an objective 
+function (returning a numeric scalar). Additional information and examples are 
+available in \code{?fminsearch} from a R environment.
+
+\subsection{Direct grid search}
+Direct grid search, performed by \code{fmin.gridsearch}, is a functionality 
+added to the original Scilab \code{neldermead} module and constitutes another 
+specialized use of the \code{neldermead} package. This function allows to 
+explore the search space of an optimization problem around the initial point 
+\(x_0\). This optimization problem is defined by an objective function, like
+for \code{fminsearch}, and not a cost function. \code{fmin.gridsearch}
+automatically creates a grid of search points selected around the initial point 
+and evaluates the objective function at each point. The boundaries of the grid 
+are set either by a vector of parameter-specific lower and upper limits, or by 
+a vector of factors \(\alpha\) as follows:\([x_{0}/\alpha,x_{0}\times\alpha]\). 
+The number \(npts\) of points evaluated for each parameter (or dimension of the 
+optimization problem) can also be defined. The total number of points in the 
+grid is therefore \(npts^n\). At the end of the search, \code{fmin.gridsearch} 
+returns a table sorted by value of the objective function. The feasibility of 
+the objective function is also determined at each point, as 
+\code{fmin.gridsearch} is a wrapper around \code{optimbase.gridsearch} which 
+assesses the feasbility of a cost function in addition to calculating its value 
+at each particular search point. Because \code{fmin.gridsearch} does not accept 
+constraints, the objective function should always be feasible. Additional 
+information is available in \code{?fmin.gridsearch} from a R environment.
+
 \section{Examples}
 We present in this section basic examples illustrating the use of \neldermead{}
 functions to optimize unconstrained or constrained systems. More complex
@@ -515,7 +560,7 @@ the R port of the Scilab \pkg{neldermead} module is almost literal, the user
 should be able to reproduce the described examples in R with minimal
 adaptations.
 
-\subsection{Example 1: basic use}
+\subsection{Example 1: Basic use}
 In the following example, we solve a simple quadratic test case. We begin by
 defining the cost function, which takes 3 input arguments and returns the value
 of the objective function as the \code{f} element of a list. The standard 
@@ -543,7 +588,7 @@ parameters.
   transpose(neldermead.get(nm,'-xopt'))
 @
 
-\subsection{Example 2: customized use}
+\subsection{Example 2: Customized use}
 In the following example, we solve the Rosenbrock test case. We begin by
 defining the Rosenbrock function, which takes 3 input arguments and returns the
 value of the objective function. The standard starting point [-1.2 1.0] is
@@ -634,7 +679,7 @@ xr=[0.99999999999996 0.999999999999907], f(xr)=0.000000
 Sort 
 \end{verbatim}
 
-\subsection{Example 3: optimization with bound constraints}
+\subsection{Example 3: Optimization with bound constraints}
 In the following example, we solve a simple quadratic test case used in Example
 1 but in the case where bounds are set for parameter estimates. We begin by
 defining the cost function, which takes 3 input arguments and returns the value
@@ -671,7 +716,7 @@ performs the search for the minimum.
   transpose(neldermead.get(nm,'-xopt'))
 @
 
-\subsection{Example 4: optimization with nonlinear inequality constraints}
+\subsection{Example 4: Optimization with nonlinear inequality constraints}
 In the following example, we solve Michalewicz's \(G_6\) test problem using
 Box's methods \cite{Michalewicz.2004} \footnote{Example suggested by Pascal 
 Grandeau}. This problem consists in minimizing: 
@@ -704,21 +749,21 @@ guesses.
 
 <<>>=
   michalewicz <- function(x=NULL,index=NULL,fmsfundata=NULL){
-	f <- c()
-	c <- c()
-	if (index == 2 | index ==6) 
-		f <- (x[1]-10)^3+(x[2]-20)^3
-	
-	if (index == 5 | index ==6)
-		c <- c((x[1]-5)^2+(x[2]-5)^2 -100, 
-				82.81-((x[1]-6)^2+(x[2]-5)^2))
-	varargout <- list(f=f,
-			g=c(),
-			c=c, 
-			gc=c(),
-			index=index,
-			this=list(costfargument=fmsfundata))
-	return(varargout)
+  f <- c()
+  c <- c()
+  if (index == 2 | index ==6) 
+    f <- (x[1]-10)^3+(x[2]-20)^3
+  
+  if (index == 5 | index ==6)
+    c <- c((x[1]-5)^2+(x[2]-5)^2 -100, 
+        82.81-((x[1]-6)^2+(x[2]-5)^2))
+  varargout <- list(f=f,
+      g=c(),
+      c=c, 
+      gc=c(),
+      index=index,
+      this=list(costfargument=fmsfundata))
+  return(varargout)
   }
   set.seed(0)
   x0 <- transpose(c(15,4.99))
@@ -789,12 +834,25 @@ for the minimum.
   neldermead.get(nm,'-fopt')
 @
 
-\section{fminsearch}
-\code{fminsearch} function is based on a specialized use of the more general
-\code{neldermead} function bundle and searches for the unconstrained minimum of 
-a given cost function. This function corresponds to the Matlab (or Scilab) 
-fminsearch function. Additional information and examples are available in 
-\code{?fminsearch} from a R environment.
+\subsection{Example 6: Direct grid search}
+In the following example, we use the Rosenbrock test case introduced as Example 
+2 to illustrate the direct grid search capacity of \code{neldermead}. We begin
+by defining the Rosenbrock function, which takes only one input argument and 
+returns the value of the objective function. We request 6 points per dimension 
+of the problem and set the range of search around the standard starting point
+[-1.2 1.0] by providing limits. \code{fmin.gridsearch} performs the search and 
+return a table sorted by value of the cost function.
+
+<<>>=
+  rosenbrock <- function(x=NULL){
+    f <- 100*(x[2]-x[1]^2)^2+(1-x[1])^2
+  }
+  x0 <- c(-1.2,1.0)
+  npts <- 6
+  xmin <- c(-2,-2)
+  xmax <- c(2,2)
+  fmin.gridsearch(fun=rosenbrock,x0=x0,xmin=xmin,xmax=xmax,npts=npts,alpha=alpha)
+@
 
 \section{References}
 % Bibliography

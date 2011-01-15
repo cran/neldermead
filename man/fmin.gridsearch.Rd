@@ -9,18 +9,18 @@
 }
 \usage{
   fmin.gridsearch(fun = NULL, x0 = NULL, xmin = NULL, 
-                       xmax = NULL, npts = 3, alpha = 10)
+                  xmax = NULL, npts = 3, alpha = 10)
 }
 \arguments{
-  \item{fun}{An unconstrained cost function, similar to those used in the 
-    \code{fminsearch} function.}
+  \item{fun}{An unconstrained cost function returning a numeric scalar, similar 
+    to those used in the \code{fminsearch} function.}
   \item{x0}{The initial point estimate, provided as a numeric vector.}
   \item{xmin}{Optional: a vector of lower bounds.}
   \item{xmax}{Optional: a vector of upper bounds.}
-  \item{npts}{A integer scalar greater than 2, indicating the number of 
+  \item{npts}{An integer scalar greater than 2, indicating the number of 
     evaluation points will be used on each dimension to build the search grid.}
-  \item{alpha}{A vector of positive numbers, which give the factor(s) used to 
-    calculate the evaluation range of each dimension of the search grid (see 
+  \item{alpha}{A vector of numbers greater than 1, which give the factor(s) used
+    to calculate the evaluation range of each dimension of the search grid (see 
     Details). If \code{alpha} length is lower than that of \code{x0}, elements 
     of \code{alpha} are recycled. If its length is higher than that of 
     \code{x0}, \code{alpha} is truncated.}
