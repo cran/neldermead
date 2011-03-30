@@ -6,7 +6,7 @@
 % Load packages
 \usepackage{Rd}
 \usepackage{ucs}
-\usepackage[utf8x]{inputenc}
+\usepackage[latin1]{inputenc}
 \usepackage{fontenc}
 \usepackage{amsmath}    % need for subequations
 \usepackage{amsfonts}
@@ -25,7 +25,7 @@
 \newcommand{\neldermead}{\pkg{neldermead}}
 
 \title{The neldermead Package - version 1.0-5}
-\author{Sébastien Bihorel}
+\author{S\'ebastien Bihorel}
 
 \begin{document}
 \maketitle
