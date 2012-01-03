@@ -12,7 +12,6 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}   % need for figures
-\usepackage{pstricks}
 \usepackage{verbatim}   % useful for program listings
 \usepackage{color}      % use if color is used in text
 \usepackage[pdfborder={0 0 0}]{hyperref}   % use for hypertext links, including
@@ -24,7 +23,7 @@
 % Defines some custom commands
 \newcommand{\neldermead}{\pkg{neldermead}}
 
-\title{The neldermead Package - version 1.0-5}
+\title{The neldermead Package - version 1.0-7}
 \author{S\'ebastien Bihorel}
 
 \begin{document}
@@ -869,7 +868,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  
-  \includegraphics[angle=90,height=0.85\textheight]{fminsearch.png}
+  \includegraphics[angle=90,height=0.85\textheight]{fminsearch.pdf}
     \label{fminsearch}
     \caption{fminsearch function network (1/6)}
   \end{center}
@@ -877,7 +876,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  
-  \includegraphics[height=0.85\textheight]{neldermeadsearch1.png}
+  \includegraphics[height=0.85\textheight]{neldermeadsearch1.pdf}
     \label{neldermeadsearch1}
     \caption{fminsearch function network (2/6)}
   \end{center}
@@ -885,7 +884,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  
-  \includegraphics[angle=90,height=0.85\textheight]{neldermeadsearch2.png}
+  \includegraphics[angle=90,height=0.85\textheight]{neldermeadsearch2.pdf}
     \label{neldermeadsearch2}
     \caption{fminsearch function network (3/6)}
   \end{center}
@@ -893,7 +892,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  
-  \includegraphics[angle=90,height=0.85\textheight]{neldermeadalgo1.png}
+  \includegraphics[angle=90,height=0.85\textheight]{neldermeadalgo1.pdf}
     \label{neldermeadalgo1}
     \caption{fminsearch function network (4/6)}
   \end{center}
@@ -901,7 +900,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  
-  \includegraphics[angle=90,height=0.85\textheight]{neldermeadalgo2.png}
+  \includegraphics[angle=90,height=0.85\textheight]{neldermeadalgo2.pdf}
     \label{neldermeadalgo2}
     \caption{fminsearch function network (5/6)}
   \end{center}
@@ -909,7 +908,7 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 \begin{figure}[h!]
   \begin{center}  
-  \includegraphics[angle=90,height=0.85\textheight]{neldermeadalgo3.png}
+  \includegraphics[angle=90,height=0.85\textheight]{neldermeadalgo3.pdf}
     \label{neldermeadalgo3}
     \caption{fminsearch function network (6/6)}
   \end{center}

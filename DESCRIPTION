@@ -1,15 +1,15 @@
 Package: neldermead
 Type: Package
 Title: R port of the Scilab neldermead module
-Version: 1.0-6
-Date: 2011-03-30
+Version: 1.0-7
+Date: 2012-01-03
 Author: Sebastien Bihorel, Michael Baudin (author of the original
         module)
 Maintainer: Sebastien Bihorel <sb.pmlab@gmail.com>
 Depends: optimbase, optimsimplex
 Description: Provides several direct search optimization algorithms
         based on the simplex method. The provided algorithms are direct
-        search algorithms, i.e. algorithms which do not use the
+        search algorithms, i.e.  algorithms which do not use the
         derivative of the cost function. They are based on the update
         of a simplex. The following algorithms are available: the fixed
         shape simplex method of Spendley, Hext and Himsworth
@@ -20,6 +20,6 @@ Description: Provides several direct search optimization algorithms
         simplex).
 License: CeCILL-2
 LazyLoad: yes
-Packaged: 2011-03-31 00:17:14 UTC; sebastien
+Packaged: 2012-10-29 08:59:16 UTC; ripley
 Repository: CRAN
-Date/Publication: 2011-03-31 08:56:11
+Date/Publication: 2012-10-29 08:59:16
