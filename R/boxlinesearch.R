@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -17,15 +17,15 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
 
   verbose <- optimbase.cget(this=this$optbase,key='-verbose')
 
-  if (verbose==1){
+  if (verbose==TRUE){
     this <- neldermead.log(this=this,msg='boxlinesearch')
     this <- neldermead.log(this=this,msg=sprintf('> xhigh=[%s], fhigh=%e',strvec(xhigh),fhigh))
     this <- neldermead.log(this=this,msg=sprintf('> xbar=[%s]',strvec(xbar)))
   }
   xr <- neldermead.interpolate(x1=xbar,x2=xhigh,fac=rho)
-  if (verbose==1)
+  if (verbose==TRUE)
     this <- neldermead.log(this=this,msg=sprintf('> xr = [%s]',strvec(xr)))
-  status = FALSE
+  status <- FALSE
   alphamin <- this$guinalphamin
   hasnlcons <- optimbase.hasnlcons(this=this$optbase)
 
@@ -43,18 +43,18 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
     rm(tmp)
 
     if (fr<fhigh){
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,
                                msg=sprintf('fr = %e improves %e : no need for scaling for f',fr,fhigh))
-      status = TRUE
+      status <-TRUE
       break
     }
     alpha <- alpha * this$boxineqscaling
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,
                              msg=sprintf('Scaling for f with alpha=%e',alpha))
     xr <- (1.0-alpha)*xbar+alpha*xr0
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg=sprintf('> xr = %s',strvec(xr)))
   }
 
@@ -86,7 +86,7 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
       xmax <- boundsmax[ix]
       xrix <- xr[ix]
       if (xrix>xmax){
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,
                                  msg=sprintf('Projecting index #%d = %e on max bound %e - %e',
                                              ix,xrix,xmax,boxboundsalpha))
@@ -95,7 +95,7 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
           scaledc <- TRUE
       }
       if (xrix<xmin){
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,
                                  msg=sprintf('Projecting index #%e = %e on min bound %e - %e',
                                              ix,xrix,xmin,boxboundsalpha))
@@ -104,7 +104,7 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
           scaledc = TRUE
       }
     }
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,
                              msg=sprintf(' > After projection into bounds xr = [%s]',strvec(xr)))
   }
@@ -116,9 +116,9 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
   #
   nbnlc <- optimbase.cget(this=this$optbase,key='-nbineqconst')
   if (nbnlc==0){
-    status = TRUE
+    status <-TRUE
   } else {
-    status = FALSE
+    status <-FALSE
     alpha <- 1.0
     xr0 <- xr
     while (alpha>alphamin){
@@ -127,16 +127,16 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
         feasible <- tmp$isfeasible
       rm(tmp)
       if (feasible){
-        status = TRUE
+        status <-TRUE
         break
       }
       alpha <- alpha * this$boxineqscaling
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,
                                msg=sprintf('Scaling for nonlinear/linear inequality constraints with alpha=%e from xbar=[%s] toward [%s]',
                                            alpha,strvec(xbar),strvec(xr0)))
       xr <- (1.0-alpha)*xbar+alpha*xr0
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,msg=sprintf('> xr = [%s]',strvec(xr)))
       if (!scaledc)
         scaledc <- TRUE

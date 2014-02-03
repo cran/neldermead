@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -40,7 +40,7 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
       tolsa <- this$tolsimplexizeabsolute
       tolsr <- this$tolsimplexizerelative
       ssize0 <- this$simplexsize0
-      if (verbose==1)
+      if (verbose==TRUE)
         this$optbase <- optimbase.stoplog(this=this$optbase,
                                           msg=sprintf('  > simplex size=%e < %e + %e * %e',
                                                       ssize,tolsa,tolsr,ssize0))
@@ -57,12 +57,12 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
   if (!terminate){
     if (this$tolssizedeltafvmethod){
       ssize <- optimsimplex.size(this=simplex,method='sigmaplus')
-      if (verbose==1)
+      if (verbose==TRUE)
         this$optbase <- optimbase.stoplog(this=this$optbase,
                                           msg=sprintf('  > simplex size=%e < %e',
                                                       ssize,this$tolsimplexizeabsolute))
       shiftfv <- abs(optimsimplex.deltafvmax(this=simplex))
-      if (verbose==1)
+      if (verbose==TRUE)
         this$optbase <- optimbase.stoplog(this=this$optbase,
                                           msg=sprintf('  > abs(fv(n+1) - fv(1))=%e < toldeltafv=%e',
                                                       shiftfv,this$toldeltafv))
@@ -72,7 +72,7 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
       }
     }
   }
-
+  
   #
   # Criteria #8 : Kelley stagnation, based on
   # a sufficient decrease condition
@@ -84,7 +84,7 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
         this <- tmp$data
       rm(tmp)
       nsg <- transpose(sg)%*%sg
-      if (verbose==1){
+      if (verbose==TRUE){
         sgstr <- strvec(sg)
         this$optbase <- optimbase.stoplog(this=this$optbase,
                                           msg=sprintf('Test Stagnation: nsg = %e, sg = [%s]',
@@ -110,13 +110,13 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
   if (!terminate){
     if (this$boxtermination){
       shiftfv <- abs(optimsimplex.deltafvmax(this=simplex))
-      if (verbose==1)
+      if (verbose==TRUE)
         this$optbase <- optimbase.stoplog(this=this$optbase,
                                           msg=sprintf('Test Box : shiftfv=%e < boxtolf=%e',
                                                       shiftfv,this$boxtolf))
       if (shiftfv<this$boxtolf){
         this$boxkount <- this$boxkount + 1
-        if (verbose==1)
+        if (verbose==TRUE)
           this$optbase <- optimbase.stoplog(this=this$optbase,
                                             msg=sprintf('Test Box : boxkount=%d == boxnbmatch=%d',
                                                         this$boxkount,this$boxnbmatch))
@@ -136,7 +136,7 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
   if (!terminate){
     if (this$tolvarianceflag){
       var <- optimsimplex.fvvariance(this=simplex)
-      if (verbose==1)
+      if (verbose==TRUE)
         this$optbase <- optimbase.stoplog(this=this$optbase,
                                           msg=sprintf('Test tolvariance: %e < %e',
                                                       var,this$tolabsolutevariance))
@@ -163,7 +163,7 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
       }
     }
   }
-  if (verbose==1)
+  if (verbose==TRUE)
     this$optbase <- optimbase.stoplog(this=this$optbase,
                                       msg=sprintf('  > Terminate = %s, status = %s',
                                                   terminate,status))

@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -14,7 +14,7 @@
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
 neldermead.outputcmd <- function(this=NULL,state=NULL,simplex=NULL,step=NULL){
-
+  
   outputcmd <- optimbase.cget(this=this$optbase,key='-outputcommand')
   if (!is.character(outputcmd)){
     brutedata <- optimbase.outstruct(this=this$optbase)
@@ -24,7 +24,7 @@ neldermead.outputcmd <- function(this=NULL,state=NULL,simplex=NULL,step=NULL){
                  funccount=brutedata$funccount,
                  simplex=simplex,
                  step=step)
-    attr(data,'type') <- 'T_NMDATA'
+    class(data) <- 'neldermead.data'
     optimbase.outputcmd(this=this$optbase,state=state,data=data)
   }
 

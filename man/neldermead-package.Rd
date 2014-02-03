@@ -1,6 +1,5 @@
 \name{neldermead-package}
 \alias{neldermead-package}
-\alias{neldermead}
 \docType{package}
 \title{
   R port of the Scilab neldermead module
@@ -22,8 +21,10 @@
       Nelder-Mead specific settings, such as the method to compute the initial
       simplex, the specific termination criteria,
     \item \code{fminsearch} provides a simplified Nelder-Mead algorithm.
-       Specific termination criteria, initial simplex and auxiliary settings
-       are automatically configured.
+      Specific termination criteria, initial simplex and auxiliary settings are 
+      automatically configured.
+    \item \code{fminbnd} provides a simplified Box algorithm, ie the equivalent
+      of \code{fminsearch} for unconstrained search.
     \item \code{optimset}, \code{optimget} provide commands to emulate their
       Scilab counterparts.
     \item \code{optimplotfunccount}, \code{optimplotx} and \code{optimplotfval}
@@ -63,7 +64,7 @@
         guess point.
       }
     \item Manage cost function: \itemize{
-      \item optionnal additionnal argument,
+      \item optional additional argument,
       \item direct communication of the task to perform: cost function or
         inequality constraints.
       }
@@ -79,7 +80,7 @@
       \item history of function values,
       \item history of optimum point,
       \item history of simplices,
-      \item history of termination criterias.
+      \item history of termination criteria.
       }
     \item Provide a plot command which allows to graphically see the history
       of the simplices toward the optimum (Not yet implemented).
@@ -94,8 +95,8 @@
   \tabular{ll}{
   Package: \tab neldermead\cr
   Type: \tab Package\cr
-  Version: \tab 1.0-7\cr
-  Date: \tab 2012-01-03\cr
+  Version: \tab 1.0-8\cr
+  Date: \tab 2014-02-03\cr
   License: \tab CeCILL-2\cr
   LazyLoad: \tab yes
   }

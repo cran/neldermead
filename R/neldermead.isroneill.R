@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -49,7 +49,7 @@ neldermead.isroneill <- function(this=NULL){
 
     if (fv<fopt){
       istorestart <- TRUE
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,
                                msg=sprintf('Must restart because fv=%e at [%s] is lower than fopt=%e',
                                            fv,strvec(x),fopt))
@@ -64,7 +64,7 @@ neldermead.isroneill <- function(this=NULL){
 
     if (fv<fopt){
       istorestart <- TRUE
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,
                                msg=sprintf('Must restart because fv=%e at [%s] is lower than fopt=%e',
                                             fv,strvec(x),fopt))

@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -31,8 +31,7 @@ optimget <- function(options=NULL, key=NULL, value=NULL){
   }
 
   # Search the field by index
-  fields <- c('Display','FunValCheck','MaxFunEvals','MaxIter','OutputFcn',
-              'PlotFcns','TolFun','TolX')
+  fields <- names(options)
 
   # Search for the given key in the list of available fields.
   # Use a regexp which ignores the case
@@ -42,7 +41,7 @@ optimget <- function(options=NULL, key=NULL, value=NULL){
   if (opsize==0){
     cat(sprintf('optimget: No match found between key (%s) and options elements (%s).\n',
                 key, paste(names(options),collapse=', ')))
-    return(NULL)
+    return(value)
   } else if (opsize!=1){
     matching <- paste(r[1:opsize], collapse=' ')
     stop(sprintf('optimget: Ambiguous property name matches several fields %s\n',

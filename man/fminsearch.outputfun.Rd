@@ -1,22 +1,22 @@
-\name{fminsearch.outputfun}
-\alias{fminsearch.outputfun}
+\name{fminbnd.outputfun}
+\alias{fminbnd.outputfun}
 \title{
-  fminsearch Output Function Call
+  fminbnd Output Function Call
 }
 \description{
   This function calls the output function and make it match neldermead
-  requirements. It is used in the \code{fminsearch} function as the
+  requirements. It is used in the \code{fminbnd} function as the
   \code{outputcommand} element of the neldermead object (see
-  \code{?neldermead.new} and \code{?neldermead.configure}).
+  \code{?neldermead} and \code{?neldermead.configure}).
 }
 \usage{
-  fminsearch.outputfun(state = NULL, data = NULL, fmsdata = NULL)
+  fminbnd.outputfun(state = NULL, data = NULL, fmsdata = NULL)
 }
 \arguments{
   \item{state}{The current state of the algorithm either 'init', 'iter' or
     'done'.}
-  \item{data}{The data at the current state. This is a list with a 'type'
-    attribute set to 'T_NMDATA' and  with the following elements:\describe{
+  \item{data}{The data at the current state. This is an object of class 
+    'neldermead.data', i.e. a list with the following elements: \describe{
       \item{x}{The current parameter estimates.}
       \item{fval}{The current value of the cost function.}
       \item{simplex}{The current simplex object.}
@@ -25,8 +25,8 @@
       \item{step}{The type of step in the previous iteration.}
     }
   }
-  \item{fmsdata}{This is a list with a 'type' attribute set to 'T_FARGS'
-    which contains specific data of the \code{fminsearch} algorithm: \describe{
+  \item{fmsdata}{This is an object of class 'optimbase.functionargs' which 
+    contains specific data of the \code{fminbnd} algorithm: \describe{
       \item{Display}{what to display}
       \item{OutputFcn}{the array of output functions}
       \item{PlotFcns}{the array of plot functions}
@@ -42,8 +42,8 @@ Author of Scilab neldermead module: Michael Baudin (INRIA - Digiteo)
 Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
 }
 \seealso{
-  \code{\link[neldermead]{fminsearch}},
-  \code{\link[neldermead]{neldermead.new}},
+  \code{\link[neldermead]{fminbnd}},
+  \code{\link[neldermead]{neldermead}},
   \code{\link[neldermead]{neldermead.configure}},
 }
 \keyword{ method }

@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -34,31 +34,32 @@ neldermead.startup <- function(this=NULL){
   # 2. Get the initial guess and compute the initial simplex
   x0 <- optimbase.cget(this=this$optbase,key='-x0')
   if (!any(this$simplex0method==c('given','axes','spendley','pfeffer','randbounds')))
-    stop(sprintf('neldermead.startup: Unknown value %s for -simplex0method option.',this$simplex0method),
+    stop(sprintf('neldermead.startup: Unknown value %s for -simplex0method option.',
+                 this$simplex0method),
          call.=FALSE)
 
   if (this$simplex0method=='given'){
-    tmp <- optimsimplex.new(coords=this$coords0,fun=costf.transposex,data=this)
+    tmp <- optimsimplex(coords=this$coords0,fun=costf.transposex,data=this)
       simplex0 <- tmp$newobj
       this <- tmp$data
     rm(tmp)
   }
   if (this$simplex0method=='axes'){
-    tmp <- optimsimplex.new(method='axes',x0=transpose(x0),fun=costf.transposex,
+    tmp <- optimsimplex(method='axes',x0=transpose(x0),fun=costf.transposex,
                             len=this$simplex0length,data=this)
       simplex0 <- tmp$newobj
       this <- tmp$data
     rm(tmp)
   }
   if (this$simplex0method=='spendley'){
-    tmp <- optimsimplex.new(method='spendley',x0=transpose(x0),fun=costf.transposex,
+    tmp <- optimsimplex(method='spendley',x0=transpose(x0),fun=costf.transposex,
                             len=this$simplex0length,data=this)
       simplex0 <- tmp$newobj
       this <- tmp$data
     rm(tmp)
   }
   if (this$simplex0method=='pfeffer'){
-    tmp <- optimsimplex.new(method='pfeffer',x0=transpose(x0),fun=costf.transposex,
+    tmp <- optimsimplex(method='pfeffer',x0=transpose(x0),fun=costf.transposex,
                             deltausual=this$simplex0deltausual,deltazero=this$simplex0deltazero,
                             data=this)
       simplex0 <- tmp$newobj
@@ -74,7 +75,7 @@ neldermead.startup <- function(this=NULL){
     if (!hasbounds)
       stop('neldermead.startup: Randomized bounds initial simplex is not available without bounds.',
            call.=FALSE)
-    tmp <- optimsimplex.new(method='randbounds',x0=transpose(x0),fun=costf.transposex,
+    tmp <- optimsimplex(method='randbounds',x0=transpose(x0),fun=costf.transposex,
                             boundsmin=this$optbase$boundsmin,boundsmax=this$optbase$boundsmax,
                             nbve=this$boxnbpointseff,data=this)
        simplex0 <- tmp$newobj

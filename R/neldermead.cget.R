@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -62,7 +62,7 @@ neldermead.cget <- function(this=NULL,key=NULL){
     value <- this$sigma
   }
   if (key=='-tolsimplexizemethod'){
-  value <- this$tolsimplexizemethod
+    value <- this$tolsimplexizemethod
   }
   if (key=='-tolsimplexizeabsolute'){
     value <- this$tolsimplexizeabsolute
@@ -89,8 +89,8 @@ neldermead.cget <- function(this=NULL,key=NULL){
     value <- this$kelleystagnationflag
   }
   if (key=='-kelleynormalizationflag'){
-  }
     value <- this$kelleynormalizationflag
+  }
   if (key=='-kelleystagnationalpha0'){
     value <- this$kelleystagnationalpha0
   }

@@ -1,7 +1,7 @@
 \name{fminsearch}
 \alias{fminsearch}
 \title{
-  Computation of the unconstrained minimimum of given function with the
+  Computation of the unconstrained minimum of given function with the
   Nelder-Mead algorithm.
 }
 \description{
@@ -16,7 +16,7 @@
   \code{neldermead} functions instead of the \code{fminsearch} function.
 }
 \usage{
-  fminsearch(fun = NULL, x0 = NULL, options = NULL)
+  fminsearch(fun = NULL, x0 = NULL, options = NULL, verbose=FALSE)
 }
 \arguments{
   \item{fun}{A cost function return a numeric scalar.}
@@ -39,6 +39,7 @@
         at the end of each iteration. The default value is empty.}
     }
   }
+  \item{verbose}{The verbose option, controlling the amount of messages.}
 }
 \details{
   \strong{Termination criteria}
@@ -61,7 +62,7 @@
   The \code{fminsearch} algorithm uses a special initial simplex, which is an
   heuristic depending on the initial guess. The strategy chosen by
   \code{fminsearch} corresponds to the content of \code{simplex0method}
-  element of the neldermead pbject (set to 'pfeffer').  It is applied using 
+  element of the neldermead object (set to 'pfeffer').  It is applied using 
   the content of the \code{simplex0deltausual} (0.05) and
   \code{simplex0deltazero} (0.0075) elements. Pfeffer's method is an heuristic
   which is presented in 'Global Optimization Of Lennard-Jones Atomic Clusters'
@@ -73,12 +74,12 @@
   In this section, we present the default values for the number of iterations in
   \code{fminsearch}.
 
-  The \code{options} input argument is an optionnal list which can
+  The \code{options} input argument is an optional list which can
   contain the \code{MaxIter} field, which stores the maximum number of
   iterations. The default value is 200n, where n is the number of variables.
   The factor 200 has not been chosen by chance, but is the result of experiments
   performed against quadratic functions with increasing space dimension.
-  This result is presented in 'Effect of dimensionality on the nelder-mead
+  This result is presented in 'Effect of dimensionality on the Nelder-mead
   simplex method' by Lixing Han and Michael Neumann. This paper is based on
   Lixing Han's  PhD, 'Algorithms in Unconstrained Optimization'. The study is
   based on numerical experiments with a quadratic function where the number of
@@ -99,7 +100,7 @@
 
   The input arguments \code{x}, \code{optimValues} and \code{state} are
   described in detail in the \code{optimset} help page. The
-  \code{optimValues$procedure} field represents the type of step preformed at
+  \code{optimValues$procedure} field represents the type of step performed at
   the current iteration and can be equal to one of the following strings:
   \itemize{
     \item '' (the empty string),

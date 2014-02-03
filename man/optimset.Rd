@@ -14,21 +14,35 @@
   that the algorithm uses the options configured by the user.
 }
 \usage{
-  optimset(method = NULL,
-           Display = NULL,
-           FunValCheck = NULL,
-           MaxFunEvals = NULL,
-           MaxIter = NULL,
-           OutputFcn = NULL,
-           PlotFcns = NULL,
-           TolFun = NULL,
-           TolX = NULL)
+  optimset(method = NULL,...)
 }
 \arguments{
-  \item{method}{If provided, the \code{method} argument overrides all the
-   others and \code{optimset.method} is called. If the content of \code{method}
-   is recognized, a defuault set of options are returned. The only current
-   recognized character string is 'fminsearch'.}
+  \item{method}{If provided, the \code{method} calls the \code{optimset.method} 
+    function. If the content of \code{method} is recognized, a default set of 
+    options are returned. The only current recognized character strings are 
+    'fminsearch' and 'fminbnd'.}
+  \item{...}{Additional arguments which would be included in the options output
+    if the \code{method} argument is not used. See Details.}
+}
+\details{
+  Most optimization algorithms require many algorithmic parameters such as the
+  number of iterations or the number of function evaluations. If these
+  parameters are given to the optimization function as input parameters, this
+  forces both the user and the developer to manage many input parameters. The
+  goal of the \code{optimset} function is to simplify the management of input
+  arguments, by gathering all the parameters into a single list.
+
+  While the current implementation of the \code{optimset} function only supports
+  the \code{fminsearch} and \code{fminbnd} function, it is designed to be 
+  extended to as many optimization function as required. Because all 
+  optimization algorithms do not require the same parameters, the data structure 
+  aims at remaining flexible. But, most of the time, most parameters are the 
+  same from algorithm to algorithm, for example, the tolerance parameters which 
+  drive the termination criteria are often the same, even if the termination 
+  criteria itself is not the same.
+
+  Optimization parameters that are returned by the \code{optimset} function and
+  that can be defined in \code{...} are the following: \describe{
   \item{Display}{The verbose level. The default value is 'notify'. The following
     is a list of available verbose levels.\describe{
       \item{'off'}{The algorithm displays no message at all.}
@@ -58,24 +72,18 @@
     graphic).}
   \item{TolFun}{The absolute tolerance on function value.}
   \item{TolX}{The absolute tolerance on the variable x.}
-}
-\details{
-  Most optimization algorithms require many algorithmic parameters such as the
-  number of iterations or the number of function evaluations. If these
-  parameters are given to the optimization function as input parameters, this
-  forces both the user and the developper to manage many input parameters. The
-  goal of the \code{optimset} function is to simplify the management of input
-  arguments, by gathering all the parameters into a single list.
-
-  While the current implementation of the \code{optimset} function only supports
-  the \code{fminsearch} function, it is designed to be extended to as many
-  optimization function as required. Because all optimization algorithms do not
-  require the same parameters, the data structure aims at remaining flexible.
-  But, most of the time, most parameters are the same from algorithm to
-  algorithm, for example, the tolerance parameters which drive the termination
-  criteria are often the same, even if the termination criteria itself is not
-  the same.
-
+  \item{nbMatch}{Specific to Box method: the number of consecutive times the 
+    \code{TolFun} criteria must be met to terminate the optimization.}
+  \item{boundsAlpha}{Specific to Box method: the parameter used to project the 
+    vertices into the bounds in Box's algorithm}
+  \item{boxScaling}{Specific to Box method: the scaling coefficient used to 
+    scale the trial point for function improvement or into the constraints of 
+    Box's algorithm}
+  \item{alphaMin}{Specific to Box method: the minimum value of alpha when 
+    scaling the vertices of the simplex into nonlinear constraints in Box's 
+    algorithm}
+  }
+  
   \strong{Output and plot functions}
   The 'OutputFcn' and 'PlotFcns' options accept as argument a function (or a
   list of functions). In the client optimization algorithm, this output or plot
@@ -106,7 +114,8 @@
 }
 \value{
   Return a list with the following fields: Display, FunValCheck, MaxFunEvals,
-  MaxIter, OutputFcn, PlotFcns, TolFun, and TolX.
+  MaxIter, OutputFcn, PlotFcns, TolFun, TolX, nbMatch, boundsAlpha, boxScaling, 
+  and alphaMin.
 }
 \author{
 Author of Scilab neldermead module: Michael Baudin (INRIA - Digiteo)
@@ -114,10 +123,11 @@ Author of Scilab neldermead module: Michael Baudin (INRIA - Digiteo)
 Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
 }
 \seealso{
-  \code{\link{optimset.method}},\code{\link{fminsearch}}
+  \code{\link{optimset.method}},\code{\link{fminsearch}}, \code{\link{fminbnd}}
 }
 \examples{
   optimset()
   optimset(Display='iter')
+  optimset(method='fminbnd')
 }
 \keyword{ method }

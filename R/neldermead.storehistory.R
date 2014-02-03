@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -14,10 +14,12 @@
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
 neldermead.storehistory <- function(this=NULL,n=NULL,fopt=NULL,xopt=NULL,
-                                    xcoords=NULL){
+                                    fv=NULL,xcoords=NULL){
 
   storehistory <- optimbase.cget(this=this$optbase,key='-storehistory')
   iterations <- optimbase.get(this=this$optbase,key='-iterations')
+  verbose <- neldermead.cget(this=this,key='-verbose')
+  nbve <- neldermead.get(this=this,key='-simplex0')$nbve
   if (storehistory){
     this$optbase <- optimbase.histset(this=this$optbase,
                                       iter=iterations,
@@ -27,7 +29,11 @@ neldermead.storehistory <- function(this=NULL,n=NULL,fopt=NULL,xopt=NULL,
                                       iter=iterations,
                                       key='-historyxopt',
                                       value=xopt[1:n])
-    this$historysimplex[[iterations]] <- xcoords[1:n+1,1:n]
+    this$historysimplex[[iterations]] <- simplex(verbose=verbose,
+      x=xcoords[1:(n+1),1:n,drop=FALSE],
+      fv=fv,
+      n=n,
+      nbve=nbve)
   }
   return(this)
 }

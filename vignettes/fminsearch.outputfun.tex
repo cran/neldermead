@@ -1,17 +1,17 @@
 \inputencoding{utf8}
-\HeaderA{fminsearch.outputfun}{fminsearch Output Function Call}{fminsearch.outputfun}
-\keyword{method}{fminsearch.outputfun}
+\HeaderA{fminbnd.outputfun}{fminbnd Output Function Call}{fminbnd.outputfun}
+\keyword{method}{fminbnd.outputfun}
 %
 \begin{Description}\relax
 This function calls the output function and make it match neldermead
-requirements. It is used in the \code{fminsearch} function as the
+requirements. It is used in the \code{fminbnd} function as the
 \code{outputcommand} element of the neldermead object (see
-\code{?neldermead.new} and \code{?neldermead.configure}).
+\code{?neldermead} and \code{?neldermead.configure}).
 \end{Description}
 %
 \begin{Usage}
 \begin{verbatim}
-  fminsearch.outputfun(state = NULL, data = NULL, fmsdata = NULL)
+  fminbnd.outputfun(state = NULL, data = NULL, fmsdata = NULL)
 \end{verbatim}
 \end{Usage}
 %
@@ -19,8 +19,8 @@ requirements. It is used in the \code{fminsearch} function as the
 \begin{ldescription}
 \item[\code{state}] The current state of the algorithm either 'init', 'iter' or
 'done'.
-\item[\code{data}] The data at the current state. This is a list with a 'type'
-attribute set to 'T\_NMDATA' and  with the following elements:\begin{description}
+\item[\code{data}] The data at the current state. This is an object of class 
+'neldermead.data', i.e. a list with the following elements: \begin{description}
 
 \item[x] The current parameter estimates.
 \item[fval] The current value of the cost function.
@@ -32,8 +32,8 @@ attribute set to 'T\_NMDATA' and  with the following elements:\begin{description
 \end{description}
 
 
-\item[\code{fmsdata}] This is a list with a 'type' attribute set to 'T\_FARGS'
-which contains specific data of the \code{fminsearch} algorithm: \begin{description}
+\item[\code{fmsdata}] This is an object of class 'optimbase.functionargs' which 
+contains specific data of the \code{fminbnd} algorithm: \begin{description}
 
 \item[Display] what to display
 \item[OutputFcn] the array of output functions
@@ -56,7 +56,7 @@ Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
 \end{Author}
 %
 \begin{SeeAlso}\relax
-\code{\LinkA{fminsearch}{fminsearch}},
-\code{\LinkA{neldermead.new}{neldermead.new}},
+\code{\LinkA{fminbnd}{fminbnd}},
+\code{\LinkA{neldermead}{neldermead}},
 \code{\LinkA{neldermead.configure}{neldermead.configure}},
 \end{SeeAlso}

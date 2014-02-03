@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -15,7 +15,7 @@
 
 neldermead.updatesimp <- function(this=NULL){
 
-  simplex0 <- optimsimplex.new()$this
+  simplex0 <- optimsimplex()$newobj
   xopt <- optimbase.get(this=this$optbase,key='-xopt')
 
   if (!any(this$restartsimplexmethod==c('axes','spendley','pfeffer','randbounds','oriented')))
@@ -24,14 +24,14 @@ neldermead.updatesimp <- function(this=NULL){
 
  
   if (this$restartsimplexmethod=='oriented'){
-    tmp <- optimsimplex.new(method='oriented',simplex0=this$simplexopt,fun=costf.transposex,data=this)
+    tmp <- optimsimplex(method='oriented',simplex0=this$simplexopt,fun=costf.transposex,data=this)
       simplex0 <- tmp$newobj
       this <- tmp$data
     rm(tmp)
   }
   if (this$restartsimplexmethod=='axes'){
     simplex0 <- optimsimplex.destroy(this=simplex0)
-    tmp <- optimsimplex.new(method='axes',x0=transpose(xopt),fun=costf.transposex,
+    tmp <- optimsimplex(method='axes',x0=transpose(xopt),fun=costf.transposex,
                             len=this$simplex0length,data=this)
       simplex0 <- tmp$newobj
       this <- tmp$data
@@ -39,7 +39,7 @@ neldermead.updatesimp <- function(this=NULL){
   }
   if (this$restartsimplexmethod=='spendley'){
     simplex0 <- optimsimplex.destroy(this=simplex0)
-    tmp <- optimsimplex.new(method='spendley',x0=transpose(xopt),fun=costf.transposex,
+    tmp <- optimsimplex(method='spendley',x0=transpose(xopt),fun=costf.transposex,
                             len=this$simplex0length,data=this)
       simplex0 <- tmp$newobj
       this <- tmp$data
@@ -47,7 +47,7 @@ neldermead.updatesimp <- function(this=NULL){
   }
   if (this$restartsimplexmethod=='pfeffer'){
     simplex0 <- optimsimplex.destroy(this=simplex0)
-    tmp <- optimsimplex.new(method='pfeffer',x0=transpose(xopt),fun=costf.transposex,
+    tmp <- optimsimplex(method='pfeffer',x0=transpose(xopt),fun=costf.transposex,
                             deltausual=this$simplex0deltausual,deltazero=this$simplex0deltazero,
                             data=this)
       simplex0 <- tmp$newobj
@@ -65,7 +65,7 @@ neldermead.updatesimp <- function(this=NULL){
       stop('neldermead_updatesimp: Randomized bounds initial simplex is not available without bounds.',
            call.=FALSE)
     simplex0 <- optimsimplex.destroy(this=simplex0)
-    tmp <- optimsimplex.new(method='randbounds',x0=transpose(xopt),fun=costf.transposex,
+    tmp <- optimsimplex(method='randbounds',x0=transpose(xopt),fun=costf.transposex,
                             boundsmin=this$optbase$boundsmin,boundsmax=this$optbase$boundsmax,
                             nbve=this$boxnbpointseff,data=this)
       simplex0 <- tmp$newobj
@@ -83,7 +83,7 @@ neldermead.updatesimp <- function(this=NULL){
   #
   nbve <- optimsimplex.getnbve(this=simplex0)
   this <- neldermead.log(this=this,msg='Before scaling:')
-  str <- optimsimplex.tostring(this=simplex0)
+  str <- optimsimplex.tostring(x=simplex0)
   for (i in 1:nbve){
     this <- neldermead.log(this=this,msg=str[i])
   }
@@ -121,7 +121,7 @@ neldermead.updatesimp <- function(this=NULL){
     }
   }
   this <- neldermead.log(this=this,msg='After scaling:')
-  str <- optimsimplex.tostring(this=simplex0)
+  str <- optimsimplex.tostring(x=simplex0)
   for (i in 1:nbve){
     this <- neldermead.log(this=this,msg=str[i])
   }

@@ -26,7 +26,7 @@
   boxlinesearch(this = NULL, n = NULL, xbar = NULL, xhigh = NULL, fhigh = NULL,
                 rho = NULL)
   neldermead.storehistory(this = NULL, n = NULL, fopt = NULL, xopt = NULL,
-                          xcoords = NULL)
+                          fv = NULL, xcoords = NULL)
   neldermead.termination(this = NULL, fvinitial = NULL, oldfvmean = NULL,
                          newfvmean = NULL, previousxopt = NULL,
                          currentxopt = NULL, simplex = NULL)
@@ -42,6 +42,7 @@
   \item{fopt}{The current value of the function at the current optimum point
     estimate.}
   \item{xopt}{The current optimum point estimate.}
+  \item{fv}{The function values, with size nbve x 1.}
   \item{xcoords}{Matrix of size n x n+1, coordinates of the n+1 vertices}
   \item{fvinitial}{The initial cost function value.}
   \item{oldfvmean}{The old cost function value average on the simplex.}

@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -14,7 +14,7 @@
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
 neldermead.variable <- function(this=NULL){
-
+  
   #
   # Check settings correspond to algo
   #
@@ -70,9 +70,9 @@ neldermead.variable <- function(this=NULL){
     #
     # Store history
     #
-
     xcoords <- optimsimplex.getallx(this=simplex)
-    this <- neldermead.storehistory(this=this,n=n,fopt=flow,xopt=xlow,xcoords=xcoords)
+    allfv <- optimsimplex.getallfv(this=simplex)
+    this <- neldermead.storehistory(this=this,n=n,fopt=flow,xopt=xlow,fv=allfv,xcoords=xcoords)
     currentfopt <- flow
     previousxopt <- currentxopt
     currentxopt <- xlow
@@ -80,7 +80,7 @@ neldermead.variable <- function(this=NULL){
     currentcenter <- transpose(optimsimplex.center(this=simplex))
     oldfvmean <- newfvmean
     newfvmean <- optimsimplex.fvmean(this=simplex)
-    if (verbose==1){
+    if (verbose==TRUE){
       deltafv <- abs(optimsimplex.deltafvmax(this=simplex))
       totaliter <- optimbase.get(this=this$optbase,key='-iterations')
       funevals <- optimbase.get(this=this$optbase,key='-funevals')
@@ -93,8 +93,8 @@ neldermead.variable <- function(this=NULL){
       this <- neldermead.log(this=this,msg=sprintf('DeltaFv: %e',deltafv))
       this <- neldermead.log(this=this,msg=sprintf('Center: %s',strvec(currentcenter)))
       this <- neldermead.log(this=this,msg=sprintf('Size: %e',ssize))
-      str <- optimsimplex.tostring(this=simplex)
-      for (i in 1:n+1){
+      str <- optimsimplex.tostring(x=simplex)
+      for (i in 1:(n+1)){
         this <- neldermead.log(this=this,msg=str[i])
       }
     }
@@ -122,12 +122,12 @@ neldermead.variable <- function(this=NULL){
     #
     # Compute xbar, center of better vertices
     #
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg=sprintf('Reflect'))
 
     # Transpose, because optimsimplex returns row vectors
     xbar <- transpose(optimsimplex.xbar(this=simplex))
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg=paste('xbar=',strvec(xbar),sep=''))
 
     #
@@ -141,20 +141,20 @@ neldermead.variable <- function(this=NULL){
       index <- tmp$index
     rm(tmp)
 
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,
                              msg=sprintf(paste('xr=[',strvec(xr),'], f(xr)=%f',sep=''),fr))
 
     if (fr>=flow & fr<fn){
       # Reflexion
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,msg='  > Perform reflection')
       simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fr,x=transpose(xr))
       step <- 'reflection'
     }
     if (fr<flow){
       # Expand
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,msg='Expand')
       xe <- neldermead.interpolate(x1=xbar,x2=xhigh,fac=this$rho*this$chi)
       tmp <- optimbase.function(this=this$optbase,x=xe,index=2)
@@ -163,30 +163,30 @@ neldermead.variable <- function(this=NULL){
         index <- tmp$index
       rm(tmp)
 
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,
                                msg=sprintf(paste('xe=',strvec(xe),', f(xe)=%f',sep=''),fe))
 
       if (greedy){
         if (fe<flow){
-          if (verbose==1)
+          if (verbose==TRUE)
             this <- neldermead.log(this=this,msg='  > Perform Greedy Expansion')
           simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fe,x=transpose(xe))
           step <- 'expansion'
         } else {
-          if (verbose==1)
+          if (verbose==TRUE)
             this <- neldermead.log(this=this,msg='  > Perform Greedy Reflection')
           simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fr,x=transpose(xr))
           step <- 'reflection'
         }
       } else {
         if (fe<fr){
-          if (verbose==1)
+          if (verbose==TRUE)
             this <- neldermead.log(this=this,msg='  > Perform Expansion')
           simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fe,x=transpose(xe))
           step <- 'expansion'
         }else{
-          if (verbose==1)
+          if (verbose==TRUE)
             this <- neldermead.log(this=this,msg='  > Perform Reflection')
           simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fr,x=transpose(xr))
           step <- 'reflection'
@@ -195,7 +195,7 @@ neldermead.variable <- function(this=NULL){
     }
     if (fr>=fn & fr<fhigh){
       # Outside contraction
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,msg='Contract - outside')
       xc <- neldermead.interpolate(x1=xbar,x2=xhigh,fac=this$rho*this$gamma)
       tmp <- optimbase.function(this=this$optbase,x=xc,index=2)
@@ -203,17 +203,17 @@ neldermead.variable <- function(this=NULL){
         fc <- tmp$f
         index <- tmp$index
       rm(tmp)
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,
                                msg=sprintf(paste('xc=',strvec(xc),', f(xc)=%f',sep=''),fc))
       if (fc<=fr){
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,msg='  > Perform Outside Contraction')
         simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fc,x=transpose(xc))
         step <- 'outsidecontraction'
       } else {
         #  Shrink
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,msg='  > Perform Shrink')
         tmp <- optimsimplex.shrink(this=simplex,fun=costf.transposex,sigma=this$sigma,data=this)
           simplex <- tmp$this
@@ -224,7 +224,7 @@ neldermead.variable <- function(this=NULL){
     }
     if (fr>=fn & fr>=fhigh){
       # Inside contraction
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,msg='Contract - inside')
       xc <- neldermead.interpolate(x1=xbar,x2=xhigh,fac=-this$gamma)
       tmp <- optimbase.function(this=this$optbase,x=xc,index=2)
@@ -232,16 +232,16 @@ neldermead.variable <- function(this=NULL){
         fc <- tmp$f
         index <- tmp$index
       rm(tmp)
-      if (verbose==1)
+      if (verbose==TRUE)
         this <- neldermead.log(this=this,msg=sprintf(paste('xc=',strvec(xc),', f(xc)=%f',sep=''),fc))
       if(fc < fhigh ){
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,msg='  > Perform Inside Contraction')
         simplex <- optimsimplex.setve(this=simplex,ive=n+1,fv=fc,transpose(xc))
         step <- 'insidecontraction'
       } else {
         #  Shrink
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,msg='  > Perform Shrink')
         tmp <- optimsimplex.shrink(this=simplex,fun=costf.transposex,sigma=this$sigma,data=this)
           simplex <- tmp$this
@@ -253,7 +253,7 @@ neldermead.variable <- function(this=NULL){
     #
     # Sort simplex
     #
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg='Sort')
 
     simplex <- optimsimplex.sort(this=simplex)

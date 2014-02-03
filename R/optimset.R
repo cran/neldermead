@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -13,45 +13,32 @@
 # "Nelder-Mead User's Manual", 2010, Consortium Scilab - Digiteo,
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
-optimset <- function(method=NULL,Display=NULL,FunValCheck=NULL,MaxFunEvals=NULL,
-                     MaxIter=NULL,OutputFcn=NULL,PlotFcns=NULL,TolFun=NULL,
-                     TolX=NULL){
-
-  # Check inputs
-  varargin <- as.list(match.call())[-1]
-  nargin <- length(varargin)
-
-  options <- list(Display=NULL,
-                  FunValCheck=NULL,
-                  MaxFunEvals=NULL,
-                  MaxIter=NULL,
-                  OutputFcn=NULL,
-                  PlotFcns=NULL,
-                  TolFun=NULL,
-                  TolX=NULL)
-                    
-  if (nargin==0){
-    return(options)
-  }
-
+optimset <- function(method=NULL,...){
+  
   if (!is.null(method)){
     options <- optimset.method(method=method)
     return(options)
   }
-
-  #
-  # Process key values
-  #
-  keys <- c('Display','FunValCheck','MaxFunEvals','MaxIter','OutputFcn','PlotFcns',
-            'TolFun','TolX')
-
-  for (key in keys){
-    # Use suppressWarnings to enable the set of a function into the variable
-    # "value". If not, a warning message is triggered, when a double value
-    # is stored into "value" after a function has already been
-    # stored in it.
-    if (!is.null(eval(parse(text=key))))
-      suppressWarnings(options[[key]] <- eval(parse(text=key)))
+  
+  options <- list(Display=NULL,
+    FunValCheck=NULL,
+    MaxFunEvals=NULL,
+    MaxIter=NULL,
+    OutputFcn=NULL,
+    PlotFcns=NULL,
+    TolFun=NULL,
+    TolX=NULL,
+    nbMatch=NULL,
+    boundsAlpha=NULL,
+    boxScaling=NULL,
+    alphaMin=NULL)
+  
+  dots <- list(...)
+  
+  if (length(dots)>0){
+    for (key in names(dots)){
+      options[[key]] <- dots[[key]]
+    }
   }
   
   return(options)

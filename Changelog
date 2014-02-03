@@ -1,6 +1,15 @@
-2012/01/03 Sebastien Bihorel <sb.pmlab@gmail.com>
+2014/01/26 Sebastien Bihorel <sb.pmlab@gmail.com>
 
-  * In vignette, png images were switched to pdf files.  
+  * Change vignette data location to comply to R 3.0 requirements 
+  * Add NAMESPACE
+  * Rename .Rnw file due to creation of neldermead.tex doc file
+  * Formal creation of "existing" or new classes:
+    - neldermead
+    - neldermead.data
+  * Add is, summary, and print methods for neldermead class objects
+  * Add experimental fminbnd, equivalent of fminsearch for constrained 
+    optimization (limited documentation provided)
+  * deprecated function: neldermead.new
 
 2011/03/30 Sebastien Bihorel <sb.pmlab@gmail.com>
 

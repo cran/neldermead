@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -68,7 +68,8 @@ neldermead.box <- function(this=this){
     # Store history
     #
     xcoords <- optimsimplex.getallx(this=simplex)
-    this <- neldermead.storehistory(this=this,n=n,fopt=flow,xopt=xlow,xcoords=xcoords)
+    allfv <- optimsimplex.getallfv(this=simplex)
+    this <- neldermead.storehistory(this=this,n=n,fopt=flow,xopt=xlow,fv=allfv,xcoords=xcoords)
     currentfopt <- flow
     previousxopt <- currentxopt
     currentxopt <- xlow
@@ -76,7 +77,7 @@ neldermead.box <- function(this=this){
     currentcenter <- transpose(optimsimplex.center(this=simplex))
     oldfvmean <- newfvmean
     newfvmean <- optimsimplex.fvmean(this=simplex)
-    if (verbose==1){
+    if (verbose==TRUE){
       deltafv <- abs(optimsimplex.deltafvmax(this=simplex))
       totaliter <- optimbase.get(this=this$optbase,key='-iterations')
       funevals <- optimbase.get(this=this$optbase,key='-funevals')
@@ -89,11 +90,13 @@ neldermead.box <- function(this=this){
       this <- neldermead.log(this=this,msg=sprintf('DeltaFv: %e',deltafv))
       this <- neldermead.log(this=this,msg=sprintf('Center: [%s]',strvec(currentcenter)))
       this <- neldermead.log(this=this,msg=sprintf('Size: %e',ssize))
-      str <- optimsimplex.tostring(this=simplex)
+      str <- optimsimplex.tostring(x=simplex)
       for (i in 1:nbve){
         this <- neldermead.log(this=this,msg=str[i])
       }
     }
+    this$optbase <- optimbase.set(this=this$optbase,key='-xopt',value=xlow)
+    this$optbase <- optimbase.set(this=this$optbase,key='-fopt',value=flow)
     neldermead.outputcmd(this=this,state='iter',simplex=simplex,step=step)
 
     #
@@ -108,7 +111,7 @@ neldermead.box <- function(this=this){
         status <- tmp$status
       rm(tmp)
       if (terminate) {
-        if (verbose==1)
+        if (verbose==TRUE)
           this <- neldermead.log(this=this,msg=sprintf('Terminate with status : %s',status))
         break
       }
@@ -117,10 +120,10 @@ neldermead.box <- function(this=this){
     #
     # Compute xbar, center of better vertices
     #
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg='Reflect')
     xbar <- transpose(optimsimplex.xbar(this=simplex))
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg=sprintf('xbar=[%s]',strvec(xbar)))
 
     #
@@ -137,7 +140,7 @@ neldermead.box <- function(this=this){
       status <- 'impossibleimprovement'
       break
     }
-    if (verbose==1){
+    if (verbose==TRUE){
       this <- neldermead.log(this=this,msg=sprintf('xr=[%s], f(xr)=%f',strvec(xr),fr))
       this <- neldermead.log(this=this,msg='  > Perform Reflection')
     }
@@ -147,7 +150,7 @@ neldermead.box <- function(this=this){
     #
     # Sort simplex
     #
-    if (verbose==1)
+    if (verbose==TRUE)
       this <- neldermead.log(this=this,msg='Sort')
     simplex <- optimsimplex.sort(this=simplex)
   }

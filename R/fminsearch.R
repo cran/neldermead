@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2011 - Sebastien Bihorel
+# Copyright (C) 2010-2014 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -13,31 +13,30 @@
 # "Nelder-Mead User's Manual", 2010, Consortium Scilab - Digiteo,
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
-fminsearch <- function(fun=NULL,x0=NULL,options=NULL) {
-
-  # Defines output 
-  varargout <- list(x=c(),fval=c(),exitflag=c(),output=list())
-
+fminsearch <- function(fun=NULL,x0=NULL,options=NULL,verbose=FALSE) {
+  
   # Check inputs
-  varargin <- as.list(match.call())[-1]
-  nargin <- length(varargin)
-
-  if (nargin !=2 & nargin!=3)
-    stop(sprintf('fminsearch: Unexpected number of input arguments: %d provided while 2 or 3 are expected.',
-                 nargin),
-         call. = FALSE)
-         
-  # Get x0 and change it into a column vector
-  x0t <- prod(size(x0))
-  x0 <- matrix(x0,nrow=x0t,ncol=1)
+  if (missing(fun) | is.null(fun))
+    stop('fminsearch: fun argument cannot be missing or NULL.',
+      call. = FALSE)
+  
+  if (missing(x0) | is.null(x0))
+    stop('fminsearch: x0 argument cannot be missing or NULL.',
+      call. = FALSE)
+  
+  # Set options
   defaultoptions <- optimset('fminsearch')
-  if (is.null(options)){
-    # No options on the command line 
-    # Set default values
+  if (is.null(options))
     options <- defaultoptions
-  }
-
-
+  
+  # Set verbose
+  if (!is.logical(verbose))
+    verbose <- FALSE
+  verbose <- verbose[1]
+  
+  # Coerce x0 into a column vector
+  x0 <- cbind(x0)
+  
   # Compute options from the options list
   numberofvariables <- prod(size(x0))
   MaxFunEvals <- optimget(options=options,key='MaxFunEvals',value=defaultoptions$MaxFunEvals)
@@ -77,19 +76,19 @@ fminsearch <- function(fun=NULL,x0=NULL,options=NULL) {
   }
   
   # Prepare the data structure to pass to the output function
-  fmsdata <- list(Display=Display,
-                  OutputFcn=OutputFcn,
-                  PlotFcns=PlotFcns)
-
-  attr(fmsdata,'type') <- 'T_FARGS'                  
-
-  # Prepare the data structure to pass to the cost function
-  fmsfundata <- list(Fun=fun)
+  fmsdata <- structure(
+    list(Display=Display,
+      OutputFcn=OutputFcn,
+      PlotFcns=PlotFcns),
+    class='optimbase.outputargs')
   
-  attr(fmsfundata,'type') <- 'T_FARGS'
-
+  # Prepare the data structure to pass to the cost function
+  fmsfundata <- structure(
+    list(Fun=fun),
+    class='optimbase.functionargs')
+  
   # Perform Optimization
-  nm <- neldermead.new()
+  nm <- neldermead()
   nm <- neldermead.configure(this=nm,key='-x0',value=x0)
   nm <- neldermead.configure(this=nm,key='-numberofvariables',value=numberofvariables)
   nm <- neldermead.configure(this=nm,key='-simplex0method',value='pfeffer')
@@ -109,24 +108,23 @@ fminsearch <- function(fun=NULL,x0=NULL,options=NULL) {
   nm <- neldermead.configure(this=nm,key='-checkcostfunction',value=FALSE)
   nm <- neldermead.configure(this=nm,key='-outputcommand',value=fminsearch.outputfun)
   nm <- neldermead.configure(this=nm,key='-outputcommandarg',value=fmsdata)
-  #nm <- neldermead.configure(this=nm,key='-verbose',value=1)
-  #nm <- neldermead.configure(this=nm,key='-verbosetermination',value=1)
+  nm <- neldermead.configure(this=nm,key='-verbose',value=verbose)
+  #nm <- neldermead.configure(this=nm,key='-verbosetermination',value=TRUE)
   nm <- neldermead.search(this=nm)
-  x <- transpose(neldermead.get(this=nm,key='-xopt'))
   fval <- neldermead.get(this=nm,key='-fopt')
   status <- neldermead.get(this=nm,key='-status')
-
+  
   if (!any(status==c('maxiter','maxfuneval','tolsizedeltafv')))
     stop(sprintf('fminsearch: Unknown status %s',status),
          call.=FALSE)
-
+  
   if (status=='maxiter'){
     if ((Display=='notify') | (Display=='iter') | (Display=='final')){
       cat(paste('fminsearch:  Exiting: Maximum number of iterations has been exceeded\n',
                 '         - increase MaxIter option.\n',
                 '         Current function value: ',fval,'\n',sep=''))
     }
-    exitflag <- 0
+    nm$exitflag <- FALSE
   }
   if (status=='maxfuneval'){
     if ((Display=='notify') | (Display=='iter') | (Display=='final')){
@@ -134,31 +132,26 @@ fminsearch <- function(fun=NULL,x0=NULL,options=NULL) {
                 '         - increase MaxFunEvals option.\n',
                 '         Current function value: ',fval,'\n',sep=''))
     }
-    exitflag <- 0
+    nm$exitflag <- FALSE
   }
   if (status=='tolsizedeltafv'){
-    exitflag <- 1
+    nm$exitflag <- TRUE
   }
-
-  output <- list(algorithm ='Nelder-Mead simplex direct search',
-                 funcCount =neldermead.get(this=nm,key='-funevals'),
-                 iterations=neldermead.get(this=nm,key='-iterations'),
-                 message   =sprintf('%s\n%s %e\n%s %e\n','Optimization terminated:',
-                                    ' the current x satisfies the termination criteria using OPTIONS.TolX of',
-                                    TolX,' and F(X) satisfies the convergence criteria using OPTIONS.TolFun of',
-                                    TolFun))
-
+  
+  nm$output <- list(algorithm ='Nelder-Mead simplex direct search',
+                    funcCount =neldermead.get(this=nm,key='-funevals'),
+                    iterations=neldermead.get(this=nm,key='-iterations'),
+                    message   =sprintf('%s\n%s %e\n%s %e\n','Optimization terminated:',
+                                       ' the current x satisfies the termination criteria using OPTIONS.TolX of',
+                                       TolX,' and F(X) satisfies the convergence criteria using OPTIONS.TolFun of',
+                                       TolFun))
+  
   if ((Display=='final') | (Display=='iter')){
-    if (exitflag==1){
-      cat(output$message)
+    if (nm$exitflag==TRUE){
+      cat(nm$output$message)
     }
   }
-
-  nm <- neldermead.destroy(this=nm)
-
-  varargout <- list(x=x,fval=fval,exitflag=exitflag,output=output)
-
-  return(varargout)
-
+  
+  return(nm)
+  
 }
-

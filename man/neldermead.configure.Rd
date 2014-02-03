@@ -241,7 +241,7 @@
     \item{'-boxtolf'}{The absolute tolerance on difference of function values in
       the simplex, suggested by Box. This tolerance is used if the
       -\code{boxtermination} element is set to TRUE.}
-    \item{'-boxnbmatch'}{tThe number of consecutive match of Box's termination
+    \item{'-boxnbmatch'}{The number of consecutive match of Box's termination
       criteria.}
     \item{'-boxboundsalpha'}{The parameter used to project the vertices into the
       bounds in Box's algorithm.}
@@ -259,6 +259,6 @@ Author of Scilab neldermead module: Michael Baudin (INRIA - Digiteo)
 Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
 }
 \seealso{
-  \code{\link[neldermead]{neldermead.new}}
+  \code{\link[neldermead]{neldermead}}
 }
 \keyword{ method }

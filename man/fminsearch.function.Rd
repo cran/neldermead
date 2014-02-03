@@ -6,7 +6,7 @@
 \description{
   This function calls the cost function and makes it match neldermead
   requirements. It is used in the \code{fminsearch} function as the
-  \code{function} element of the neldermead object (see \code{?neldermead.new}
+  \code{function} element of the neldermead object (see \code{?neldermead}
   and \code{?neldermead.configure}). 
 }
 \usage{
@@ -16,8 +16,8 @@
   \item{x}{A single column vector of parameter estimates.}
   \item{index}{An integer variable set to 2, indicating that only the cost
     function is to be computed by the algorithm.}
-  \item{fmsfundata}{A list with a type attribute set to 'T_FARGS' and
-    with (at least) a \code{fun} element, which contain the user-defined cost
+  \item{fmsfundata}{An object of class 'optimbase.functionargs' and with 
+    (at least) a \code{fun} element, which contains the user-defined cost 
     function.}
 }
 \value{
@@ -35,7 +35,7 @@
 }
 \seealso{
   \code{\link[neldermead]{fminsearch}},
-  \code{\link[neldermead]{neldermead.new}},
+  \code{\link[neldermead]{neldermead}},
   \code{\link[neldermead]{neldermead.configure}},
 }
 \keyword{ method }
