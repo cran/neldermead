@@ -15,7 +15,7 @@
 
 neldermead.istorestart <- function(this=NULL){
 
-  status <- optimbase.get(this=this$optbase,key='-status')
+  status <- optimbase.get(this=this$optbase,key='status')
   if (status=='maxfuneval'){
     istorestart <- FALSE
     varargout <- list(this=this,istorestart=istorestart)

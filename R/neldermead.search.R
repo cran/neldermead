@@ -15,7 +15,7 @@
 
 neldermead.search <- function(this=NULL){
 
-  withderivatives <- optimbase.cget(this=this$optbase,key='-withderivatives')
+  withderivatives <- optimbase.get(this=this$optbase,key='withderivatives')
   if (withderivatives)
     stop('neldermead.search: The -withderivatives option is true but all algorithms in neldermead are derivative-free.',
          call.=FALSE)

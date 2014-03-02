@@ -17,7 +17,7 @@ scaleinconstraints <- function(this=NULL,x=NULL,xref=NULL){
 
   p <- x
   hasbounds <- optimbase.hasbounds(this=this$optbase)
-  nbnlc <- optimbase.cget(this=this$optbase,key='-nbineqconst')
+  nbnlc <- optimbase.get(this=this$optbase,key='nbineqconst')
   varargout <- list(this=this,isscaled=NULL,p=p)
   #
   # 1. No bounds, no nonlinear inequality constraints

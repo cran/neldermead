@@ -53,7 +53,7 @@ neldermead.autorestart <- function(this=NULL){
   } else {
     this <- neldermead.log(this=this,
                            msg=sprintf('Convergence not reached after maximum %d restarts.',this$restartnb))
-    this$optbase <- optimbase.set(this=this$optbase,key='-status',value='maxrestart')
+    this$optbase <- optimbase.set(this=this$optbase,key='status',value='maxrestart')
   }
   return(this)
 }

@@ -17,7 +17,7 @@ neldermead.scaletox0 <- function(this=NULL,simplex0=NULL){
 
   hasnlcons <- optimbase.hasnlcons(this=this$optbase)
   nbve <- optimsimplex.getnbve(this=simplex0)
-  x0 <- optimbase.cget(this=this$optbase,key='-x0')
+  x0 <- optimbase.get(this=this$optbase,key='x0')
   for (ive in 2:nbve){
     # Transpose, because optimsimplex returns row vectors
     x <- transpose(optimsimplex.getx(this=simplex0,ive=ive))

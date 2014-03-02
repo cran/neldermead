@@ -16,7 +16,7 @@
 neldermead.algo <- function(this=NULL){
 
   if (!any(this$method==c('fixed','variable','box','mine')))
-    stop(sprintf('neldermead.algo: Unknown -method %s',this$method),
+    stop(sprintf('neldermead.algo: Unknown method %s',this$method),
          call.=FALSE)
 
   if (this$method=='fixed') this <- neldermead.fixed(this=this)

@@ -131,10 +131,11 @@ the current iteration and can be equal to one of the following strings:
 \end{Details}
 %
 \begin{Value}
-Return a list with the following fields:\begin{description}
+Return a object of class neldermead. Use the \code{neldermead.get} to extract
+the following element from the returned object:\begin{description}
 
-\item[x] The vector of n numeric values, minimizing the cost function.
-\item[fval] The minimum value of the cost function.
+\item[xopt] The vector of n numeric values, minimizing the cost function.
+\item[fopt] The minimum value of the cost function.
 \item[exitflag] The flag associated with exist status of the algorithm.
 The following values are available:\begin{description}
 

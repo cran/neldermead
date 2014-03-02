@@ -15,7 +15,7 @@
 
 neldermead.isroneill <- function(this=NULL){
 
-  n <- optimbase.cget(this=this$optbase,key='-numberofvariables')
+  n <- optimbase.get(this=this$optbase,key='-numberofvariables')
   #
   # If required, make a vector step from the scalar step
   #
@@ -30,7 +30,7 @@ neldermead.isroneill <- function(this=NULL){
 
   x <- optimbase.get(this=this$optbase,key='-xopt')
   fopt <- optimbase.get(this=this$optbase,key='-fopt')
-  verbose <- optimbase.cget(this=this$optbase,key='-verbose')
+  verbose <- optimbase.get(this=this$optbase,key='-verbose')
 
   istorestart <- FALSE
   for (ix in 1:n){

@@ -1,5 +1,5 @@
-\name{neldermead.configure}
-\alias{neldermead.configure}
+\name{neldermead.set}
+\alias{neldermead.set}
 \title{
   Neldermead Object Configuration
 }
@@ -8,7 +8,7 @@
   key.
 }
 \usage{
-  neldermead.configure(this = NULL, key = NULL, value = NULL)
+  neldermead.set(this = NULL, key = NULL, value = NULL)
 }
 \arguments{
   \item{this}{The current neldermead object.}
@@ -19,10 +19,10 @@
   An updated neldermead object.
 }
 \details{
-  \code{neldermead.configure} sets the content of the \code{key} element of
+  \code{neldermead.set} sets the content of the \code{key} element of
   the neldermead object \code{this} to \code{value}. If \code{key} is a
   sub-element of \code{this$optbase}, \code{value} is assigned by
-  \code{optimbase.configure}.
+  \code{optimbase.set}.
   
   The main available keys are the following:\describe{
     \item{'-verbose'}{Set to 1 to enable verbose logging.}

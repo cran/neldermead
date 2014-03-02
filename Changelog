@@ -1,3 +1,12 @@
+2014/03/01 Sebastien Bihorel <sb.pmlab@gmail.com>
+  
+  * Simplified set and get methods:
+    - optimbase.set: code from previous optimbase.set and optimbase.configure
+    consolidated into a single function.
+    - optimbase.get: code from previous optimbase.get and optimbase.cget
+    consolidated into a single function.
+  * deprecated function: optimbase.configure, optimbase.cget
+
 2014/01/26 Sebastien Bihorel <sb.pmlab@gmail.com>
 
   * Change vignette data location to comply to R 3.0 requirements 

@@ -24,7 +24,7 @@
 % Defines some custom commands
 \newcommand{\neldermead}{\pkg{neldermead}}
 
-\title{The neldermead Package - version 1.0-8}
+\title{The neldermead Package - version 1.0-9}
 \author{S\'ebastien Bihorel}
 
 \begin{document}
@@ -158,7 +158,7 @@ back, the \code{costfargument} element is passed to the cost function
 as an input argument. If the cost function modifies its content in the output
 argument, the content of the \code{costfargument} element is updated
 accordingly. Once the optimization is performed, the user may call the
-\code{neldermead.cget} function and get back an updated \code{costfargument}
+\code{neldermead.get} function and get back an updated \code{costfargument}
 content.
  
 \subsection{The output function}
@@ -565,7 +565,7 @@ In the following example, we solve a simple quadratic test case. We begin by
 defining the cost function, which takes 3 input arguments and returns the value
 of the objective function as the \code{f} element of a list. The standard 
 starting point [-1.2 1.0] is used. \code{neldermead} creates a new
-neldermead object. Then we use \code{neldermead.configure} to configure the 
+neldermead object. Then we use \code{neldermead.set} to configure the 
 parameters of the problem. We use all default settings and perform the search
 for the optimum. \code{neldermead.get} is finally used to retrieve the optimum 
 parameters.
@@ -581,9 +581,9 @@ parameters.
 
   x0 <- transpose( c(1.0,1.0) )
   nm <- neldermead()
-  nm <- neldermead.configure(nm,'-numberofvariables',2)
-  nm <- neldermead.configure(nm,'-function',quadratic)
-  nm <- neldermead.configure(nm,'-x0',x0)
+  nm <- neldermead.set(nm,'numberofvariables',2)
+  nm <- neldermead.set(nm,'function',quadratic)
+  nm <- neldermead.set(nm,'x0',x0)
   nm <- neldermead.search(nm)
   summary(nm)
 @
@@ -593,7 +593,7 @@ In the following example, we solve the Rosenbrock test case. We begin by
 defining the Rosenbrock function, which takes 3 input arguments and returns the
 value of the objective function. The standard starting point [-1.2 1.0] is
 used. \code{neldermead} creates a new neldermead object. Then we use
-\code{neldermead.configure} to configure the parameters of the problem.
+\code{neldermead.set} to configure the parameters of the problem.
 The initial simplex is computed from the axes and the single length 1.0 (this is
 the default, but is explicitely written here as an example). The variable
 simplex algorithm by Nelder and Mead is used, which corresponds to the -method
@@ -603,7 +603,7 @@ using the \code{contour} function (this is possible since our problem involves
 only 2 parameters) and we superimpose the starting point (in red), the
 optimisation path (in bleu), and the optimum (in green) to the plot. The history
 of the optimisation can be retrieved (using \code{neldermead.get}) because the
-'-storehistory' option was set to TRUE.
+'storehistory' option was set to TRUE.
 <<fig=TRUE>>=
   rosenbrock <- function(x=NULL,index=NULL,fmsfundata=NULL){
     return(list(f=100*(x[2]-x[1]^2)^2+(1-x[1])^2,
@@ -615,19 +615,19 @@ of the optimisation can be retrieved (using \code{neldermead.get}) because the
   }
   x0 <- transpose(c(-1.2,1.0))
   nm <- neldermead()
-  nm <- neldermead.configure(nm,'-numberofvariables',2)
-  nm <- neldermead.configure(nm,'-function',rosenbrock)
-  nm <- neldermead.configure(nm,'-x0',x0)
-  nm <- neldermead.configure(nm,'-maxiter',200)
-  nm <- neldermead.configure(nm,'-maxfunevals',300)
-  nm <- neldermead.configure(nm,'-tolfunrelative',10*.Machine$double.eps)
-  nm <- neldermead.configure(nm,'-tolxrelative',10*.Machine$double.eps)
-  nm <- neldermead.configure(nm,'-simplex0method','axes')
-  nm <- neldermead.configure(nm,'-simplex0length',1.0)
-  nm <- neldermead.configure(nm,'-method','variable')
-  nm <- neldermead.configure(nm,'-verbose',FALSE)
-  nm <- neldermead.configure(nm,'-storehistory',TRUE)
-  nm <- neldermead.configure(nm,'-verbosetermination',FALSE)
+  nm <- neldermead.set(nm,'numberofvariables',2)
+  nm <- neldermead.set(nm,'function',rosenbrock)
+  nm <- neldermead.set(nm,'x0',x0)
+  nm <- neldermead.set(nm,'maxiter',200)
+  nm <- neldermead.set(nm,'maxfunevals',300)
+  nm <- neldermead.set(nm,'tolfunrelative',10*.Machine$double.eps)
+  nm <- neldermead.set(nm,'tolxrelative',10*.Machine$double.eps)
+  nm <- neldermead.set(nm,'simplex0method','axes')
+  nm <- neldermead.set(nm,'simplex0length',1.0)
+  nm <- neldermead.set(nm,'method','variable')
+  nm <- neldermead.set(nm,'verbose',FALSE)
+  nm <- neldermead.set(nm,'storehistory',TRUE)
+  nm <- neldermead.set(nm,'verbosetermination',FALSE)
   nm <- neldermead.search(nm)
   
   xmin <- ymin <- -2.0 
@@ -638,7 +638,7 @@ of the optimisation can be retrieved (using \code{neldermead.get}) because the
   zdata <- apply(expand.grid(xdata,ydata),1,
                  function(x) neldermead.function(nm,transpose(x)))
   zdata <- matrix(zdata,ncol=length(ydata))
-  optimpath <- matrix(unlist((neldermead.get(nm,'-historyxopt'))),
+  optimpath <- matrix(unlist((neldermead.get(nm,'historyxopt'))),
                       nrow=2)
   optimpath <- data.frame(x=optimpath[1,],y=optimpath[2,])
 
@@ -652,12 +652,12 @@ of the optimisation can be retrieved (using \code{neldermead.get}) because the
        xlim=c(xmin,xmax),ylim=c(ymin,ymax))
 @
 
-Setting the '-verbose' element of the neldermead object to 1 allows to get
+Setting the 'verbose' element of the neldermead object to 1 allows to get
 detailed information about the current optimization process. The following is a
 sample output for an optimization based on the Nelder and Mead variable-shape
 simplex algorithm. Only the output corresponding to the iteration \#156 is
 displayed. In order to display specific outputs (or to create specific output
-files and graphics), the '-outputcommand' option should be used.
+files and graphics), the 'outputcommand' option should be used.
 
 \begin{verbatim}
 =================================================================
@@ -685,7 +685,7 @@ In the following example, we solve a simple quadratic test case used in Example
 defining the cost function, which takes 3 input arguments and returns the value
 of the objective function as the \code{f} element of a list. The 
 starting point [1.2 1.9] is used. \code{neldermead} creates a new
-neldermead object. Then we use \code{neldermead.configure} to configure the 
+neldermead object. Then we use \code{neldermead.set} to configure the 
 parameters of the problem including the lower \code{-boundsmin} and upper 
 \code{-boundsmax} bounds. The initial simplex is computed from \code{boxnbpoints} 
 random points within the bounds. The variable simplex algorithm by Box is used, 
@@ -703,15 +703,15 @@ performs the search for the minimum.
   set.seed(0)
   x0 <- transpose(c(1.2,1.9))
   nm <- neldermead()
-  nm <- neldermead.configure(nm,'-numberofvariables',2)
-  nm <- neldermead.configure(nm,'-function',quadratic)
-  nm <- neldermead.configure(nm,'-x0',x0)
-  nm <- neldermead.configure(nm,'-verbose',FALSE)
-  nm <- neldermead.configure(nm,'-storehistory',TRUE)
-  nm <- neldermead.configure(nm,'-verbosetermination',FALSE)
-  nm <- neldermead.configure(nm,'-method','box')
-  nm <- neldermead.configure(nm,'-boundsmin',c(1,1))
-  nm <- neldermead.configure(nm,'-boundsmax',c(2,2))
+  nm <- neldermead.set(nm,'numberofvariables',2)
+  nm <- neldermead.set(nm,'function',quadratic)
+  nm <- neldermead.set(nm,'x0',x0)
+  nm <- neldermead.set(nm,'verbose',FALSE)
+  nm <- neldermead.set(nm,'storehistory',TRUE)
+  nm <- neldermead.set(nm,'verbosetermination',FALSE)
+  nm <- neldermead.set(nm,'method','box')
+  nm <- neldermead.set(nm,'boundsmin',c(1,1))
+  nm <- neldermead.set(nm,'boundsmax',c(2,2))
   nm <- neldermead.search(nm)
   summary(nm)
 @
@@ -735,7 +735,7 @@ We begin by defining the \code{michalewicz} function, which takes 3 input
 arguments and return the value of the objective function and the constraint 
 evaluations as the \code{f} and \code{c} elements of a list.
 \code{neldermead} creates a new neldermead object. Then we use 
-\code{neldermead.configure} to configure the parameters of the problem, 
+\code{neldermead.set} to configure the parameters of the problem, 
 including the lower \code{-boundsmin} and upper \code{-boundsmax} bounds. The initial 
 simplex is computed from \code{boxnbpoints} random points within the bounds. The
 variable simplex algorithm by Box is used, which corresponds to the -method 
@@ -768,18 +768,18 @@ guesses.
   set.seed(0)
   x0 <- transpose(c(15,4.99))
   nm <- neldermead()
-  nm <- neldermead.configure(nm,'-numberofvariables',2)
-  nm <- neldermead.configure(nm,'-nbineqconst',2)
-  nm <- neldermead.configure(nm,'-function',michalewicz)
-  nm <- neldermead.configure(nm,'-x0',x0)
-  nm <- neldermead.configure(nm,'-maxiter',300)
-  nm <- neldermead.configure(nm,'-maxfunevals',1000)
-  nm <- neldermead.configure(nm,'-simplex0method','randbounds')
-  nm <- neldermead.configure(nm,'-boxnbpoints',3)
-  nm <- neldermead.configure(nm,'-storehistory',TRUE)
-  nm <- neldermead.configure(nm,'-method','box')
-  nm <- neldermead.configure(nm,'-boundsmin',c(13,0))
-  nm <- neldermead.configure(nm,'-boundsmax',c(20,10))
+  nm <- neldermead.set(nm,'numberofvariables',2)
+  nm <- neldermead.set(nm,'nbineqconst',2)
+  nm <- neldermead.set(nm,'function',michalewicz)
+  nm <- neldermead.set(nm,'x0',x0)
+  nm <- neldermead.set(nm,'maxiter',300)
+  nm <- neldermead.set(nm,'maxfunevals',1000)
+  nm <- neldermead.set(nm,'simplex0method','randbounds')
+  nm <- neldermead.set(nm,'boxnbpoints',3)
+  nm <- neldermead.set(nm,'storehistory',TRUE)
+  nm <- neldermead.set(nm,'method','box')
+  nm <- neldermead.set(nm,'boundsmin',c(13,0))
+  nm <- neldermead.set(nm,'boundsmax',c(20,10))
   nm <- neldermead.search(nm)
   summary(nm)
 @
@@ -794,7 +794,7 @@ likelihood (actually a modifed negative log-likelihood approach)
 We begin by defining the \code{negLL} function, which takes 3 input
 arguments and return the value of the objective function. The random dataset is 
 then generated and stored in the list \code{fmsdundata}. \code{neldermead} 
-creates a new neldermead object. Then we use \code{neldermead.configure} to 
+creates a new neldermead object. Then we use \code{neldermead.set} to 
 configure the parameters of the problem, including \code{costfargument}, set to
 \code{fmsdundata}, and the lower \code{-boundsmin} and upper \code{-boundsmax} 
 bounds (the standard deviations has to be positive). The variable simplex
@@ -819,16 +819,16 @@ for the minimum.
 
   x0 <- transpose(c(45,3))
   nm <- neldermead()
-  nm <- neldermead.configure(nm,"-numberofvariables",2)
-  nm <- neldermead.configure(nm,"-function",negLL)
-  nm <- neldermead.configure(nm,"-x0",x0)
-  nm <- neldermead.configure(nm,"-costfargument",fmsfundata)
-  nm <- neldermead.configure(nm,"-maxiter",500)
-  nm <- neldermead.configure(nm,"-maxfunevals",1500)
-  nm <- neldermead.configure(nm,"-method","box")
-  nm <- neldermead.configure(nm,"-storehistory",TRUE)
-  nm <- neldermead.configure(nm,"-boundsmin",c(-100, 0))
-  nm <- neldermead.configure(nm,"-boundsmax",c(100, 100))
+  nm <- neldermead.set(nm,'numberofvariables',2)
+  nm <- neldermead.set(nm,'function',negLL)
+  nm <- neldermead.set(nm,'x0',x0)
+  nm <- neldermead.set(nm,'costfargument',fmsfundata)
+  nm <- neldermead.set(nm,'maxiter',500)
+  nm <- neldermead.set(nm,'maxfunevals',1500)
+  nm <- neldermead.set(nm,'method','box')
+  nm <- neldermead.set(nm,'storehistory',TRUE)
+  nm <- neldermead.set(nm,'boundsmin',c(-100, 0))
+  nm <- neldermead.set(nm,'boundsmax',c(100, 100))
   nm <- neldermead.search(this=nm)
   summary(nm)
 @
@@ -924,12 +924,12 @@ functions that are not expanded on a given plot but on a previous or later one.
 \input{fminsearch.outputfun}
 \input{fminsearch}
 \input{neldermead.algo}
-\input{neldermead.configure}
 \input{neldermead.destroy}
 \input{neldermead.get}
 \input{neldermead}
 \input{neldermead.restart}
 \input{neldermead.search}
+\input{neldermead.set}
 \input{neldermead.startup}
 \input{optimget}
 \input{optimset.method}

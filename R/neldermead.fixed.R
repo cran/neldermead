@@ -20,13 +20,13 @@ neldermead.fixed <- function(this=NULL){
   if (hascons)
     stop('neldermead.fixed: Problem has constraints, but fixed algorithm ignores them.',
          call.=FALSE)
-  verbose <- optimbase.cget(this=this$optbase,key='-verbose')
+  verbose <- optimbase.get(this=this$optbase,key='verbose')
   #
   # Order the vertices for the first time
   #
   simplex <- this$simplex0
-  n <- optimbase.cget(this=this$optbase,key='-numberofvariables')
-  fvinitial <- optimbase.get(this=this$optbase,key='-fx0')
+  n <- optimbase.get(this=this$optbase,key='numberofvariables')
+  fvinitial <- optimbase.get(this=this$optbase,key='fx0')
   # Sort function values and x points by increasing function value order
   this <- neldermead.log(this=this,msg='Sort')
   simplex <- optimsimplex.sort(this=simplex)
@@ -36,7 +36,7 @@ neldermead.fixed <- function(this=NULL){
   # Transpose, because optimsimplex returns row vectors
   currentcenter <- transpose(optimsimplex.center(this=simplex))
   newfvmean <- optimsimplex.fvmean(this=simplex)
-  currentxopt <- optimbase.cget(this=this$optbase,key='-x0')
+  currentxopt <- optimbase.get(this=this$optbase,key='x0')
   #
   # Set indices for 'clarity'
   #
@@ -74,8 +74,8 @@ neldermead.fixed <- function(this=NULL){
     newfvmean <- optimsimplex.fvmean(this=simplex)
     if (verbose==TRUE){
       deltafv <- abs(optimsimplex.deltafvmax(this=simplex))
-      totaliter <- optimbase.get(this=this$optbase,key='-iterations')
-      funevals <- optimbase.get(this=this$optbase,key='-funevals')
+      totaliter <- optimbase.get(this=this$optbase,key='iterations')
+      funevals <- optimbase.get(this=this$optbase,key='funevals')
       ssize <- optimsimplex.size(this=simplex)
       this <- neldermead.log(this=this,msg=sprintf('================================================================='))
       this <- neldermead.log(this=this,msg=sprintf('Iteration #%d (total = %d)',iter,totaliter))
@@ -90,8 +90,8 @@ neldermead.fixed <- function(this=NULL){
         this <- neldermead.log(this=this,msg=str[i])
       }
     }
-    this$optbase <- optimbase.set(this=this$optbase,key='-xopt',value=xlow)
-    this$optbase <- optimbase.set(this=this$optbase,key='-fopt',value=flow)
+    this$optbase <- optimbase.set(this=this$optbase,key='xopt',value=xlow)
+    this$optbase <- optimbase.set(this=this$optbase,key='fopt',value=flow)
     neldermead.outputcmd(this=this,state='iter',simplex=simplex,step=step)
 
     #
@@ -182,9 +182,9 @@ neldermead.fixed <- function(this=NULL){
     #
     simplex <- optimsimplex.sort(this=simplex)
   }
-  this$optbase <- optimbase.set(this=this$optbase,key='-xopt',value=xlow)
-  this$optbase <- optimbase.set(this=this$optbase,key='-fopt',value=flow)
-  this$optbase <- optimbase.set(this=this$optbase,key='-status',value=status)
+  this$optbase <- optimbase.set(this=this$optbase,key='xopt',value=xlow)
+  this$optbase <- optimbase.set(this=this$optbase,key='fopt',value=flow)
+  this$optbase <- optimbase.set(this=this$optbase,key='status',value=status)
   this$simplexopt <- simplex
 
   return(this)

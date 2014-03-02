@@ -16,13 +16,12 @@
 neldermead.updatesimp <- function(this=NULL){
 
   simplex0 <- optimsimplex()$newobj
-  xopt <- optimbase.get(this=this$optbase,key='-xopt')
-
+  xopt <- optimbase.get(this=this$optbase,key='xopt')
+  
   if (!any(this$restartsimplexmethod==c('axes','spendley','pfeffer','randbounds','oriented')))
     stop(sprintf('neldermead_updatesimp: Unexpected key %s',this$restartsimplexmethod),
          call.=FALSE)
-
- 
+  
   if (this$restartsimplexmethod=='oriented'){
     tmp <- optimsimplex(method='oriented',simplex0=this$simplexopt,fun=costf.transposex,data=this)
       simplex0 <- tmp$newobj

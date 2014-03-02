@@ -26,6 +26,6 @@ Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
 \seealso{
   \code{\link[neldermead]{fminsearch}},
   \code{\link[neldermead]{neldermead}},
-  \code{\link[neldermead]{neldermead.configure}},
+  \code{\link[neldermead]{neldermead.set}},
 }
 \keyword{ method }

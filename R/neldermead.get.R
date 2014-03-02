@@ -14,29 +14,32 @@
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
 neldermead.get <- function(this=NULL,key=NULL){
-
-  if (!any(key==c('-historysimplex','-simplexopt','-simplex0','-restartnb'))){
-    # Delegate to optbase
-    value <- optimbase.get(this=this$optbase,key=key)
-  }
   
-  if (key=='-historysimplex'){
-    storehistory <- optimbase.cget(this=this$optbase,key='-storehistory')
-    if (!storehistory){
-      stop('neldermead.get: History disabled ; turn on -storehistory option.',
-           call.=FALSE)
-    } else {
-      value <- this$historysimplex
+  if (!any(key==c('method','coords0','simplex0method','simplex0length',
+                  'simplex0deltausual','simplex0deltazero','rho','chi',
+                  'gamma','sigma','tolsimplexizeabsolute','tolsimplexizerelative',
+                  'tolsimplexizemethod','toldeltafv','tolssizedeltafvmethod',
+                  'restartmax','restarteps','restartstep','kelleystagnationflag',
+                  'kelleynormalizationflag','kelleystagnationalpha0',
+                  'restartflag','restartdetection','restartsimplexmethod',
+                  'checkcostfunction','boxnbpoints','boxineqscaling',
+                  'scalingsimplex0','guinalphamin',
+                  'boxtermination','boxtolf','boxnbmatch','boxreflect',
+                  'mymethod','myterminate','myterminateflag','tolvarianceflag',
+                  'tolabsolutevariance','tolrelativevariance','greedy',
+                  'historysimplex','simplexopt','simplex0','restartnb'))){
+    # Delegate to the optimization object
+    value <- optimbase.get(this=this$optbase,key=key)
+  } else {
+    if (key=='historysimplex'){
+      storehistory <- optimbase.get(this=this$optbase,key='storehistory')
+      if (!storehistory){
+        stop('neldermead.get: History disabled ; turn on -storehistory option.',
+          call.=FALSE)
+      }
     }
-  }
-  if (key=='-simplexopt'){
-    value <- this$simplexopt
-  }
-  if (key=='-simplex0'){
-    value <- this$simplex0
-  }
-  if (key=='-restartnb'){
-    value <- this$restartnb
+    
+    value <- this[[key]]
   }
 
   return(value)

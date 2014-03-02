@@ -7,7 +7,7 @@
   This function calls the output function and make it match neldermead
   requirements. It is used in the \code{fminbnd} function as the
   \code{outputcommand} element of the neldermead object (see
-  \code{?neldermead} and \code{?neldermead.configure}).
+  \code{?neldermead} and \code{?neldermead.set}).
 }
 \usage{
   fminbnd.outputfun(state = NULL, data = NULL, fmsdata = NULL)
@@ -44,6 +44,6 @@ Author of R adaptation: Sebastien Bihorel (\email{sb.pmlab@gmail.com})
 \seealso{
   \code{\link[neldermead]{fminbnd}},
   \code{\link[neldermead]{neldermead}},
-  \code{\link[neldermead]{neldermead.configure}},
+  \code{\link[neldermead]{neldermead.set}},
 }
 \keyword{ method }

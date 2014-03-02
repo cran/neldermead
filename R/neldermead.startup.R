@@ -32,7 +32,7 @@ neldermead.startup <- function(this=NULL){
   }
 
   # 2. Get the initial guess and compute the initial simplex
-  x0 <- optimbase.cget(this=this$optbase,key='-x0')
+  x0 <- optimbase.get(this=this$optbase,key='x0')
   if (!any(this$simplex0method==c('given','axes','spendley','pfeffer','randbounds')))
     stop(sprintf('neldermead.startup: Unknown value %s for -simplex0method option.',
                  this$simplex0method),
@@ -118,10 +118,10 @@ neldermead.startup <- function(this=NULL){
 
   # 5. Store initial data into the base optimization component
   fx0 <- optimsimplex.getfv (this=this$simplex0,ive=1)
-  this$optbase <- optimbase.set(this=this$optbase,key='-fx0',value=fx0)
-  this$optbase <- optimbase.set(this=this$optbase,key='-xopt',value=x0)
-  this$optbase <- optimbase.set(this=this$optbase,key='-fopt',value=fx0)
-  this$optbase <- optimbase.set(this=this$optbase,key='-iterations',value=0)
+  this$optbase <- optimbase.set(this=this$optbase,key='fx0',value=fx0)
+  this$optbase <- optimbase.set(this=this$optbase,key='xopt',value=x0)
+  this$optbase <- optimbase.set(this=this$optbase,key='fopt',value=fx0)
+  this$optbase <- optimbase.set(this=this$optbase,key='iterations',value=0)
 
   # 6. Initialize the termination criteria
   this <- neldermead.termstartup(this=this)

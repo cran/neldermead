@@ -15,7 +15,7 @@
 
 neldermead.outputcmd <- function(this=NULL,state=NULL,simplex=NULL,step=NULL){
   
-  outputcmd <- optimbase.cget(this=this$optbase,key='-outputcommand')
+  outputcmd <- optimbase.get(this=this$optbase,key='outputcommand')
   if (!is.character(outputcmd)){
     brutedata <- optimbase.outstruct(this=this$optbase)
     data <- list(x=brutedata$x,

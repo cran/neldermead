@@ -89,30 +89,30 @@ fminsearch <- function(fun=NULL,x0=NULL,options=NULL,verbose=FALSE) {
   
   # Perform Optimization
   nm <- neldermead()
-  nm <- neldermead.configure(this=nm,key='-x0',value=x0)
-  nm <- neldermead.configure(this=nm,key='-numberofvariables',value=numberofvariables)
-  nm <- neldermead.configure(this=nm,key='-simplex0method',value='pfeffer')
-  nm <- neldermead.configure(this=nm,key='-simplex0deltausual',value=0.05)
-  nm <- neldermead.configure(this=nm,key='-simplex0deltazero',value=0.0075)
-  nm <- neldermead.configure(this=nm,key='-method',value='variable')
-  nm <- neldermead.configure(this=nm,key='-function',value=fminsearch.function)
-  nm <- neldermead.configure(this=nm,key='-costfargument',value=fmsfundata)
-  nm <- neldermead.configure(this=nm,key='-maxiter',value=MaxIter)
-  nm <- neldermead.configure(this=nm,key='-maxfunevals',value=MaxFunEvals)
-  nm <- neldermead.configure(this=nm,key='-tolxmethod',value=FALSE)
-  nm <- neldermead.configure(this=nm,key='-tolfunmethod',value=FALSE)
-  nm <- neldermead.configure(this=nm,key='-tolssizedeltafvmethod',value=TRUE)
-  nm <- neldermead.configure(this=nm,key='-tolsimplexizemethod',value=FALSE)
-  nm <- neldermead.configure(this=nm,key='-toldeltafv',value=TolFun)
-  nm <- neldermead.configure(this=nm,key='-tolsimplexizeabsolute',value=TolX)
-  nm <- neldermead.configure(this=nm,key='-checkcostfunction',value=FALSE)
-  nm <- neldermead.configure(this=nm,key='-outputcommand',value=fminsearch.outputfun)
-  nm <- neldermead.configure(this=nm,key='-outputcommandarg',value=fmsdata)
-  nm <- neldermead.configure(this=nm,key='-verbose',value=verbose)
-  #nm <- neldermead.configure(this=nm,key='-verbosetermination',value=TRUE)
+  nm <- neldermead.set(this=nm,key='x0',value=x0)
+  nm <- neldermead.set(this=nm,key='numberofvariables',value=numberofvariables)
+  nm <- neldermead.set(this=nm,key='simplex0method',value='pfeffer')
+  nm <- neldermead.set(this=nm,key='simplex0deltausual',value=0.05)
+  nm <- neldermead.set(this=nm,key='simplex0deltazero',value=0.0075)
+  nm <- neldermead.set(this=nm,key='method',value='variable')
+  nm <- neldermead.set(this=nm,key='function',value=fminsearch.function)
+  nm <- neldermead.set(this=nm,key='costfargument',value=fmsfundata)
+  nm <- neldermead.set(this=nm,key='maxiter',value=MaxIter)
+  nm <- neldermead.set(this=nm,key='maxfunevals',value=MaxFunEvals)
+  nm <- neldermead.set(this=nm,key='tolxmethod',value=FALSE)
+  nm <- neldermead.set(this=nm,key='tolfunmethod',value=FALSE)
+  nm <- neldermead.set(this=nm,key='tolssizedeltafvmethod',value=TRUE)
+  nm <- neldermead.set(this=nm,key='tolsimplexizemethod',value=FALSE)
+  nm <- neldermead.set(this=nm,key='toldeltafv',value=TolFun)
+  nm <- neldermead.set(this=nm,key='tolsimplexizeabsolute',value=TolX)
+  nm <- neldermead.set(this=nm,key='checkcostfunction',value=FALSE)
+  nm <- neldermead.set(this=nm,key='outputcommand',value=fminsearch.outputfun)
+  nm <- neldermead.set(this=nm,key='outputcommandarg',value=fmsdata)
+  nm <- neldermead.set(this=nm,key='verbose',value=verbose)
+  #nm <- neldermead.set(this=nm,key='verbosetermination',value=TRUE)
   nm <- neldermead.search(this=nm)
-  fval <- neldermead.get(this=nm,key='-fopt')
-  status <- neldermead.get(this=nm,key='-status')
+  fval <- neldermead.get(this=nm,key='fopt')
+  status <- neldermead.get(this=nm,key='status')
   
   if (!any(status==c('maxiter','maxfuneval','tolsizedeltafv')))
     stop(sprintf('fminsearch: Unknown status %s',status),
@@ -139,8 +139,8 @@ fminsearch <- function(fun=NULL,x0=NULL,options=NULL,verbose=FALSE) {
   }
   
   nm$output <- list(algorithm ='Nelder-Mead simplex direct search',
-                    funcCount =neldermead.get(this=nm,key='-funevals'),
-                    iterations=neldermead.get(this=nm,key='-iterations'),
+                    funcCount =neldermead.get(this=nm,key='funevals'),
+                    iterations=neldermead.get(this=nm,key='iterations'),
                     message   =sprintf('%s\n%s %e\n%s %e\n','Optimization terminated:',
                                        ' the current x satisfies the termination criteria using OPTIONS.TolX of',
                                        TolX,' and F(X) satisfies the convergence criteria using OPTIONS.TolFun of',

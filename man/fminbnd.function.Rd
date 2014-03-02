@@ -7,7 +7,7 @@
   This function calls the cost function and makes it match neldermead
   requirements. It is used in the \code{fminbnd} function as the
   \code{function} element of the neldermead object (see \code{?neldermead}
-  and \code{?neldermead.configure}). 
+  and \code{?neldermead.set}). 
 }
 \usage{
   fminbnd.function(x = NULL, index = NULL, fmsfundata = NULL)
@@ -36,6 +36,6 @@
 \seealso{
   \code{\link[neldermead]{fminbnd}},
   \code{\link[neldermead]{neldermead}},
-  \code{\link[neldermead]{neldermead.configure}},
+  \code{\link[neldermead]{neldermead.set}},
 }
 \keyword{ method }

@@ -14,20 +14,20 @@
 # Michael Baudin, http://wiki.scilab.org/The_Nelder-Mead_Component
 
 neldermead.box <- function(this=this){
-
+  
   # Check settings correspond to algo
   hascons <- optimbase.hasconstraints(this=this$optbase)
   if (!hascons)
     stop('neldermead.box: Problem has no constraints, but Box algorithm is designed for them.',
          call.=FALSE)
-  verbose <- optimbase.cget(this=this$optbase,key='-verbose')
+  verbose <- optimbase.get(this=this$optbase,key='verbose')
 
   #
   # Order the vertices for the first time
   #
   simplex <- this$simplex0
-  n <- optimbase.cget(this=this$optbase,key='-numberofvariables')
-  fvinitial <- optimbase.get(this=this$optbase,key='-fx0')
+  n <- optimbase.get(this=this$optbase,key='numberofvariables')
+  fvinitial <- optimbase.get(this=this$optbase,key='fx0')
 
   # Sort function values and x points by increasing function value order
   this <- neldermead.log(this=this,msg='Step #1 : order')
@@ -35,14 +35,14 @@ neldermead.box <- function(this=this){
 
   # Transpose, because optimsimplex returns row vectors
   currentcenter <- transpose(optimsimplex.center(this=simplex))
-  currentxopt <- optimbase.cget(this=this$optbase,key='-x0')
+  currentxopt <- optimbase.get(this=this$optbase,key='x0')
   newfvmean <- optimsimplex.fvmean(this=simplex)
   nbve <- optimsimplex.getnbve(this=simplex)
   ihigh <- nbve
   inext <- ihigh - 1
   ilow <- 1
   hasbounds <- optimbase.hasbounds(this=this$optbase)
-  nbnlc <- optimbase.cget(this=this$optbase,key='-nbineqconst')
+  nbnlc <- optimbase.get(this=this$optbase,key='nbineqconst')
   rho <- this$boxreflect
 
   #
@@ -79,8 +79,8 @@ neldermead.box <- function(this=this){
     newfvmean <- optimsimplex.fvmean(this=simplex)
     if (verbose==TRUE){
       deltafv <- abs(optimsimplex.deltafvmax(this=simplex))
-      totaliter <- optimbase.get(this=this$optbase,key='-iterations')
-      funevals <- optimbase.get(this=this$optbase,key='-funevals')
+      totaliter <- optimbase.get(this=this$optbase,key='iterations')
+      funevals <- optimbase.get(this=this$optbase,key='funevals')
       ssize <- optimsimplex.size(this=simplex)
       this <- neldermead.log(this=this,msg=sprintf('================================================================='))
       this <- neldermead.log(this=this,msg=sprintf('Iteration #%d (total = %d)',iter,totaliter))
@@ -95,8 +95,8 @@ neldermead.box <- function(this=this){
         this <- neldermead.log(this=this,msg=str[i])
       }
     }
-    this$optbase <- optimbase.set(this=this$optbase,key='-xopt',value=xlow)
-    this$optbase <- optimbase.set(this=this$optbase,key='-fopt',value=flow)
+    this$optbase <- optimbase.set(this=this$optbase,key='xopt',value=xlow)
+    this$optbase <- optimbase.set(this=this$optbase,key='fopt',value=flow)
     neldermead.outputcmd(this=this,state='iter',simplex=simplex,step=step)
 
     #
@@ -155,9 +155,9 @@ neldermead.box <- function(this=this){
     simplex <- optimsimplex.sort(this=simplex)
   }
 
-  this$optbase <- optimbase.set(this=this$optbase,key='-xopt',value=xlow)
-  this$optbase <- optimbase.set(this=this$optbase,key='-fopt',value=flow)
-  this$optbase <- optimbase.set(this=this$optbase,key='-status',value=status)
+  this$optbase <- optimbase.set(this=this$optbase,key='xopt',value=xlow)
+  this$optbase <- optimbase.set(this=this$optbase,key='fopt',value=flow)
+  this$optbase <- optimbase.set(this=this$optbase,key='status',value=status)
   this$simplexopt <- simplex
 
   return(this)

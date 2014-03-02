@@ -15,7 +15,7 @@
 
 boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=NULL){
 
-  verbose <- optimbase.cget(this=this$optbase,key='-verbose')
+  verbose <- optimbase.get(this=this$optbase,key='verbose')
 
   if (verbose==TRUE){
     this <- neldermead.log(this=this,msg='boxlinesearch')
@@ -79,8 +79,8 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
   hasbounds <- optimbase.hasbounds(this=this$optbase)
   if (hasbounds){
     boxboundsalpha <- this$boxboundsalpha
-    boundsmax <- optimbase.cget(this=this$optbase,key='-boundsmax')
-    boundsmin <- optimbase.cget(this=this$optbase,key='-boundsmin')
+    boundsmax <- optimbase.get(this=this$optbase,key='boundsmax')
+    boundsmin <- optimbase.get(this=this$optbase,key='boundsmin')
     for (ix in 1:n){
       xmin <- boundsmin[ix]
       xmax <- boundsmax[ix]
@@ -114,7 +114,7 @@ boxlinesearch <- function(this=NULL,n=NULL,xbar=NULL,xhigh=NULL,fhigh=NULL,rho=N
   # and update xr.
   # Set status to 0 if the process fails.
   #
-  nbnlc <- optimbase.cget(this=this$optbase,key='-nbineqconst')
+  nbnlc <- optimbase.get(this=this$optbase,key='nbineqconst')
   if (nbnlc==0){
     status <-TRUE
   } else {

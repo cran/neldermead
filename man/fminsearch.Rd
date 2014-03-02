@@ -112,9 +112,10 @@
   }
 }
 \value{
-  Return a list with the following fields:\describe{
-    \item{x}{The vector of n numeric values, minimizing the cost function.}
-    \item{fval}{The minimum value of the cost function.}
+  Return a object of class neldermead. Use the \code{neldermead.get} to extract
+  the following element from the returned object:\describe{
+    \item{xopt}{The vector of n numeric values, minimizing the cost function.}
+    \item{fopt}{The minimum value of the cost function.}
     \item{exitflag}{The flag associated with exist status of the algorithm.
       The following values are available:\describe{
         \item{-1}{The maximum number of iterations has been reached.}
@@ -165,6 +166,7 @@ February 26, 2002, McMaster University
 }
 \seealso{
   \code{\link[neldermead]{optimset}}
+  \code{\link[neldermead]{neldermead}}
 }
 \examples{
 #In the following example, we use the fminsearch function to compute the minimum

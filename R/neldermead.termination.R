@@ -19,7 +19,7 @@ neldermead.termination <- function(this=NULL,fvinitial=NULL,oldfvmean=NULL,
 
   terminate <- FALSE
   status <- 'continue'
-  verbose <- optimbase.cget(this=this$optbase,key='-verbose')
+  verbose <- optimbase.get(this=this$optbase,key='verbose')
   #
   # Termination Criteria from parent optimization class
   #

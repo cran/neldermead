@@ -15,19 +15,19 @@
 
 neldermead.storehistory <- function(this=NULL,n=NULL,fopt=NULL,xopt=NULL,
                                     fv=NULL,xcoords=NULL){
-
-  storehistory <- optimbase.cget(this=this$optbase,key='-storehistory')
-  iterations <- optimbase.get(this=this$optbase,key='-iterations')
-  verbose <- neldermead.cget(this=this,key='-verbose')
-  nbve <- neldermead.get(this=this,key='-simplex0')$nbve
+  
+  storehistory <- optimbase.get(this=this$optbase,key='storehistory')
+  iterations <- optimbase.get(this=this$optbase,key='iterations')
+  verbose <- neldermead.get(this=this,key='verbose')
+  nbve <- neldermead.get(this=this,key='simplex0')$nbve
   if (storehistory){
     this$optbase <- optimbase.histset(this=this$optbase,
                                       iter=iterations,
-                                      key='-historyfopt',
+                                      key='historyfopt',
                                       value=fopt)
     this$optbase <- optimbase.histset(this=this$optbase,
                                       iter=iterations,
-                                      key='-historyxopt',
+                                      key='historyxopt',
                                       value=xopt[1:n])
     this$historysimplex[[iterations]] <- simplex(verbose=verbose,
       x=xcoords[1:(n+1),1:n,drop=FALSE],

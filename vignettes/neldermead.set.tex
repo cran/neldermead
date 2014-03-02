@@ -1,6 +1,6 @@
 \inputencoding{utf8}
-\HeaderA{neldermead.configure}{Neldermead Object Configuration}{neldermead.configure}
-\keyword{method}{neldermead.configure}
+\HeaderA{neldermead.set}{Neldermead Object Configuration}{neldermead.set}
+\keyword{method}{neldermead.set}
 %
 \begin{Description}\relax
 Configure the current neldermead object with the given value for the given
@@ -9,7 +9,7 @@ key.
 %
 \begin{Usage}
 \begin{verbatim}
-  neldermead.configure(this = NULL, key = NULL, value = NULL)
+  neldermead.set(this = NULL, key = NULL, value = NULL)
 \end{verbatim}
 \end{Usage}
 %
@@ -22,10 +22,10 @@ key.
 \end{Arguments}
 %
 \begin{Details}\relax
-\code{neldermead.configure} sets the content of the \code{key} element of
+\code{neldermead.set} sets the content of the \code{key} element of
 the neldermead object \code{this} to \code{value}. If \code{key} is a
 sub-element of \code{this\$optbase}, \code{value} is assigned by
-\code{optimbase.configure}.
+\code{optimbase.set}.
 
 The main available keys are the following:\begin{description}
 

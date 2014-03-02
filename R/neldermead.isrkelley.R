@@ -17,7 +17,7 @@ neldermead.isrkelley <- function(this=this){
 
   istorestart <- FALSE
   if (this$kelleystagnationflag){
-    status <- optimbase.get(this=this$optbase,key='-status')
+    status <- optimbase.get(this=this$optbase,key='status')
     if (status =='kelleystagnation')
        istorestart <- TRUE
   }
