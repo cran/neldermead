@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2014 - Sebastien Bihorel
+# Copyright (C) 2010-2015 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -28,9 +28,9 @@ neldermead.isroneill <- function(this=NULL){
   }
   restarteps <- this$restarteps
 
-  x <- optimbase.get(this=this$optbase,key='-xopt')
-  fopt <- optimbase.get(this=this$optbase,key='-fopt')
-  verbose <- optimbase.get(this=this$optbase,key='-verbose')
+  x <- optimbase.get(this=this$optbase,key='xopt')
+  fopt <- optimbase.get(this=this$optbase,key='fopt')
+  verbose <- optimbase.get(this=this$optbase,key='verbose')
 
   istorestart <- FALSE
   for (ix in 1:n){

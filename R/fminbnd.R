@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2014 - Sebastien Bihorel
+# Copyright (C) 2010-2015 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -41,7 +41,7 @@ fminbnd <- function(fun=NULL,x0=NULL,xmin=NULL,xmax=NULL,options=NULL,
         call. = FALSE)
   }
   
-  if (is.null(xmin)){
+  if (is.null(xmax)){
     xmax <- rep(+Inf,length(x0))
     cat('fminbnd: upper constraints coerced to +Inf\n.')
   } else {

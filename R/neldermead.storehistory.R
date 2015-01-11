@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2014 - Sebastien Bihorel
+# Copyright (C) 2010-2015 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -30,7 +30,7 @@ neldermead.storehistory <- function(this=NULL,n=NULL,fopt=NULL,xopt=NULL,
                                       key='historyxopt',
                                       value=xopt[1:n])
     this$historysimplex[[iterations]] <- simplex(verbose=verbose,
-      x=xcoords[1:(n+1),1:n,drop=FALSE],
+      x=xcoords[1:nbve,1:n,drop=FALSE],
       fv=fv,
       n=n,
       nbve=nbve)

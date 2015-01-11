@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2014 - Sebastien Bihorel
+# Copyright (C) 2010-2015 - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -59,7 +59,7 @@ neldermead.updatesimp <- function(this=NULL){
     } else {
       this$boxnbpointseff <- this$boxnbpoints
     }
-    hasbounds <- optimbase.hasbounds(this=this)
+    hasbounds <- optimbase.hasbounds(this=this$optbase)
     if (!hasbounds)
       stop('neldermead_updatesimp: Randomized bounds initial simplex is not available without bounds.',
            call.=FALSE)
@@ -106,7 +106,7 @@ neldermead.updatesimp <- function(this=NULL){
         stop(sprintf('neldermead_updatesimp: Impossible to scale the vertex #%d/%d at [%s] into inequality constraints',
                      ive,nbve,strvec(x)),
              call.=FALSE) 
-      if (any(x!=xp)){
+      if (any(x!=transpose(xp))){
         index <- 2
         tmp <- optimbase.function(this=this$optbase,x=xp,index=index)
           this$optbase <- tmp$this
