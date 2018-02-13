@@ -24,7 +24,7 @@
 % Defines some custom commands
 \newcommand{\neldermead}{\pkg{neldermead}}
 
-\title{The neldermead Package - version 1.0-10}
+\title{The neldermead Package - version 1.0-11}
 \author{S\'ebastien Bihorel}
 
 \begin{document}

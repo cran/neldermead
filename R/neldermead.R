@@ -1,6 +1,6 @@
 # Copyright (C) 2008-2009 - INRIA - Michael Baudin
 # Copyright (C) 2009-2010 - DIGITEO - Michael Baudin
-# Copyright (C) 2010-2015 - Sebastien Bihorel
+# Copyright (C) 2010-2018  - Sebastien Bihorel
 #
 # This file must be used under the terms of the CeCILL.
 # This source file is licensed as described in the file COPYING, which
@@ -26,7 +26,7 @@ neldermead <- function(optbase, method, simplex0, simplex0method,
   tolabsolutevariance, tolrelativevariance, variancesimplex0, mymethod, 
   myterminate, myterminateflag, greedy, output, exitflag){
   
-  newobj<-list(optbase=optimbase(),method='variable',simplex0=simplex(),
+  newobj<-list(optbase=optimbase(),method='variable',simplex0=osimplex(),
     simplex0method='axes',simplex0length=1.0,simplexsize0=0,simplexopt=NULL,
     historysimplex=list(),coords0=NULL,rho=1.0,chi=2.0,gamma=.5,sigma=.5,
     tolfstdeviation=0,tolfstdeviationmethod=FALSE,tolsimplexizeabsolute=0,

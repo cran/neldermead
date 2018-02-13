@@ -1,3 +1,8 @@
+2018/02/12 Sebastien Bihorel <sb.pmlab@gmail.com>
+
+ * Package structure clean up
+ * Update change in optimsimplex class name
+
 2015/01/11 Sebastien Bihorel <sb.pmlab@gmail.com>
   
   * Corrected bugs with Box's method in following functions:
