@@ -95,8 +95,8 @@
   \tabular{ll}{
   Package: \tab neldermead\cr
   Type: \tab Package\cr
-  Version: \tab 1.0-11\cr
-  Date: \tab 2018-02-12\cr
+  Version: \tab 1.0-12\cr
+  Date: \tab 2022-01-30\cr
   License: \tab CeCILL-2\cr
   LazyLoad: \tab yes
   }

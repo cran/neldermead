@@ -29,6 +29,7 @@
 }
 \examples{
   optimset.method('fminsearch')
-  \dontrun{optimset.method('abc')}
+  # Will fail
+  try(optimset.method('abc'))
 }
 \keyword{ method }
