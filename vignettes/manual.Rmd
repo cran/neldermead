@@ -512,7 +512,7 @@ adaptations.
 In the following example, we solve a simple quadratic test case. We begin by
 defining the cost function, which takes 3 input arguments and returns the value
 of the objective function as the $f$ element of a list. The standard 
-starting point [-1.2 1.0] is used. `neldermead` creates a new
+starting point [1.0 1.0] is used. `neldermead` creates a new
 `neldermead` object. Then we use `neldermead.set` to configure the 
 parameters of the problem. We use all default settings and perform the search
 for the optimum. `neldermead.get` is finally used to retrieve the optimum 
