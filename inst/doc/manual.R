@@ -1,7 +1,7 @@
 ## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
-## ---- echo = FALSE, message = FALSE--------------------------------------
+## ----echo = FALSE, message = FALSE---------------------------------------
 options(width = 75)
 require(neldermead)
 

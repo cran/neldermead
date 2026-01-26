@@ -4,10 +4,10 @@
 \alias{summary.neldermead}
 \alias{is.neldermead}
 \title{
-  S3 neldermead object
+  Neldermead objects
 }
 \description{
-  These functions support the S3 class 'neldermead'and are intended to 
+  These functions support the S3 class 'neldermead' and are intended to 
   either create objects of this class or check if an object is of this class.
 }
 \usage{

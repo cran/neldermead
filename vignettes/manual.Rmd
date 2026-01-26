@@ -821,26 +821,26 @@ functions that are not expanded on a given plot but on a previous or later one.
 
 **fminsearch function network (1/6; click to view at full scale)**
 
-<a href="../inst/images/fminsearch.svg" target="_blank"><img src="../inst/images/fminsearch.svg" width="100%"/></a>
+<a href="../doc/fminsearch.svg" target="_blank"><img src="../inst/doc/fminsearch.svg" width="100%"/></a>
 
 **fminsearch function network (2/6; click to view at full scale)**
 
-<a href="../inst/images/neldermeadsearch1.svg" target="_blank"><img src="../inst/images/neldermeadsearch1.svg" width="100%"/></a>
+<a href="../doc/neldermeadsearch1.svg" target="_blank"><img src="../inst/doc/neldermeadsearch1.svg" width="100%"/></a>
 
 **fminsearch function network (3/6; click to view at full scale)**
 
-<a href="../inst/images/neldermeadsearch2.svg" target="_blank"><img src="../inst/images/neldermeadsearch2.svg" width="100%"/></a>
+<a href="../doc/neldermeadsearch2.svg" target="_blank"><img src="../inst/doc/neldermeadsearch2.svg" width="100%"/></a>
 
 **fminsearch function network (4/6; click to view at full scale)**
 
-<a href="../inst/images/neldermeadalgo1.svg" target="_blank"><img src="../inst/images/neldermeadalgo1.svg" width="100%"/></a>
+<a href="../doc/neldermeadalgo1.svg" target="_blank"><img src="../inst/doc/neldermeadalgo1.svg" width="100%"/></a>
 
 **fminsearch function network (5/6; click to view at full scale)**
 
-<a href="../inst/images/neldermeadalgo2.svg" target="_blank"><img src="../inst/images/neldermeadalgo2.svg" width="100%"/></a>
+<a href="../doc/neldermeadalgo2.svg" target="_blank"><img src="../inst/doc/neldermeadalgo2.svg" width="100%"/></a>
 
 **fminsearch function network (6/6; click to view at full scale)**
 
-<a href="../inst/images/neldermeadalgo3.svg" target="_blank"><img src="../inst/images/neldermeadalgo3.svg" width="100%"/></a>
+<a href="../doc/neldermeadalgo3.svg" target="_blank"><img src="../inst/doc/neldermeadalgo3.svg" width="100%"/></a>
 
 # References
